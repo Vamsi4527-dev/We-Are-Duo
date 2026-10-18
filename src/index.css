@@ -40,3 +40,21 @@
 .animate-ring-right {
   animation: ringRight 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
+
+/* Smooth light/dark theme transition */
+html,
+body,
+#root,
+button,
+input,
+textarea,
+header,
+main,
+section,
+div {
+  transition:
+    background-color 300ms ease,
+    border-color 300ms ease,
+    color 300ms ease,
+    box-shadow 300ms ease;
+}

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { logoutUser } from "../firebase/auth";
-import { setUserOffline } from "../firebase/presence";
 import {
   getUserProfile,
   searchUsersByName,
@@ -12,8 +11,9 @@ import {
   listenToAcceptedConnections,
   listenToRejectedConnections,
 } from "../firebase/users";
+import { setUserOffline } from "../firebase/presence";
 import Logo from "./Logo";
-import { listenToUserStatus } from "../firebase/presence";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Home({ user, onOpenChat }) {
   const [profile, setProfile] = useState(null);
@@ -34,7 +34,6 @@ export default function Home({ user, onOpenChat }) {
   const [contacts, setContacts] = useState([]);
   const [contactsLoading, setContactsLoading] = useState(true);
 
-  const [contactStatuses, setContactStatuses] = useState({});
   const [rejectedRequests, setRejectedRequests] = useState([]);
 
   // Load current user's profile
@@ -135,32 +134,6 @@ export default function Home({ user, onOpenChat }) {
     return unsubscribe;
   }, [user]);
 
-  // Listen for online/offline status of every contact
-  useEffect(() => {
-    const unsubscribers = contacts.map((contact) => {
-      const contactUid = contact.contactProfile?.uid;
-
-      if (!contactUid) {
-        return null;
-      }
-
-      return listenToUserStatus(contactUid, (status) => {
-        setContactStatuses((currentStatuses) => ({
-          ...currentStatuses,
-          [contactUid]: status,
-        }));
-      });
-    });
-
-    return () => {
-      unsubscribers.forEach((unsubscribe) => {
-        if (unsubscribe) {
-          unsubscribe();
-        }
-      });
-    };
-  }, [contacts]);
-
   // Search users
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -249,56 +222,94 @@ export default function Home({ user, onOpenChat }) {
 
   // Log out
   const handleLogout = async () => {
-  try {
-    await setUserOffline(user.uid);
-    await logoutUser();
-  } catch (error) {
-    console.error("Failed to log out:", error);
-  }
-};
+    try {
+      if (user?.uid) {
+        await setUserOffline(user.uid);
+      }
+
+      await logoutUser();
+    } catch (error) {
+      console.error("Failed to log out:", error);
+    }
+  };
 
   return (
-    <main className="min-h-screen bg-[#f3f6f6]">
-      <header className="h-16 bg-white border-b border-[#d9e2e1] px-4 sm:px-6 flex items-center justify-between">
-        <div>
+    <main className="min-h-screen bg-[#f3f6f6] dark:bg-[#0d1211] transition-colors duration-300">
+      {/* Home Header */}
+      <header
+        className="
+          h-16
+          bg-white dark:bg-[#111817]
+          border-b border-[#d9e2e1] dark:border-[#293432]
+          px-4 sm:px-6
+          flex items-center justify-between
+          transition-colors duration-300
+        "
+      >
+        {/* Logo */}
+        <div className="min-w-0">
+          <Logo size="base" />
 
-          <Logo size="base"/>
-
-          <p className="text-xs text-[#566867]">
+          <p className="text-xs text-[#566867] dark:text-[#aab8b5]">
             conversations for two.
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="px-4 py-2 rounded-lg bg-[#eaf0ef] text-[#10201f] text-sm font-semibold hover:bg-[#d9e2e1] transition cursor-pointer"
-        >
-          Log out
-        </button>
+        {/* Header Controls */}
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="
+              px-4 py-2
+              rounded-lg
+              bg-[#eaf0ef] dark:bg-[#202a28]
+              text-[#10201f] dark:text-white
+              text-sm font-semibold
+              hover:bg-[#d9e2e1] dark:hover:bg-[#2c3936]
+              transition-colors duration-300
+              cursor-pointer
+            "
+          >
+            Log out
+          </button>
+
+          <ThemeToggle />
+        </div>
       </header>
 
+      {/* Main Content */}
       <section className="max-w-3xl mx-auto px-4 sm:px-6 py-6">
+        {/* Page Heading */}
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-[#10201f]">
+          <h2 className="text-2xl font-bold text-[#10201f] dark:text-white">
             Contacts
           </h2>
 
-          <p className="mt-1 text-xs text-[#566867]">
+          <p className="mt-1 text-xs text-[#566867] dark:text-[#aab8b5]">
             {profileLoading
               ? "Loading profile..."
               : `Welcome ${profile?.fullName || user?.email}`}
           </p>
         </div>
 
-        {/* Incoming connection requests */}
+        {/* Incoming Connection Requests */}
         {incomingRequestsLoading ? (
-          <p className="mb-6 text-sm text-[#566867]">
+          <p className="mb-6 text-sm text-[#566867] dark:text-[#aab8b5]">
             Loading connection requests...
           </p>
         ) : incomingRequests.length > 0 ? (
-          <div className="mb-6 bg-white border border-[#d9e2e1] rounded-2xl p-5">
-            <h3 className="text-lg font-bold text-[#10201f]">
+          <div
+            className="
+              mb-6
+              bg-white dark:bg-[#151c1b]
+              border border-[#d9e2e1] dark:border-[#303c39]
+              rounded-2xl
+              p-5
+              transition-colors duration-300
+            "
+          >
+            <h3 className="text-lg font-bold text-[#10201f] dark:text-white">
               Connection Requests
             </h3>
 
@@ -306,26 +317,43 @@ export default function Home({ user, onOpenChat }) {
               {incomingRequests.map((request) => (
                 <div
                   key={request.id}
-                  className="border border-[#d9e2e1] rounded-xl p-4 flex items-center justify-between gap-4"
+                  className="
+                    border border-[#d9e2e1] dark:border-[#303c39]
+                    bg-white dark:bg-[#151c1b]
+                    rounded-xl
+                    p-4
+                    flex items-center justify-between
+                    gap-4
+                    transition-colors duration-300
+                  "
                 >
-                  <div>
-                    <p className="font-semibold text-[#10201f]">
+                  <div className="min-w-0">
+                    <p className="font-semibold text-[#10201f] dark:text-white">
                       {request.senderProfile?.fullName ||
                         "Unknown user"}
                     </p>
 
-                    <p className="text-sm text-[#566867]">
+                    <p className="text-sm text-[#566867] dark:text-[#aab8b5]">
                       Wants to connect with you.
                     </p>
                   </div>
 
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-shrink-0">
                     <button
                       type="button"
                       onClick={() =>
                         handleAcceptRequest(request.id)
                       }
-                      className="px-3 py-2 rounded-lg bg-teal-700 text-white text-xs font-semibold hover:bg-[#0b5f58] transition"
+                      className="
+                        px-3 py-2
+                        rounded-lg
+                        bg-teal-700
+                        text-white
+                        text-xs font-semibold
+                        hover:bg-[#0b5f58]
+                        transition-colors duration-300
+                        cursor-pointer
+                      "
                     >
                       Accept
                     </button>
@@ -335,7 +363,16 @@ export default function Home({ user, onOpenChat }) {
                       onClick={() =>
                         handleRejectRequest(request.id)
                       }
-                      className="px-3 py-2 rounded-lg bg-[#eaf0ef] text-[#10201f] text-xs font-semibold hover:bg-[#d9e2e1] transition"
+                      className="
+                        px-3 py-2
+                        rounded-lg
+                        bg-[#eaf0ef] dark:bg-[#202a28]
+                        text-[#10201f] dark:text-white
+                        text-xs font-semibold
+                        hover:bg-[#d9e2e1] dark:hover:bg-[#2c3936]
+                        transition-colors duration-300
+                        cursor-pointer
+                      "
                     >
                       Reject
                     </button>
@@ -347,17 +384,26 @@ export default function Home({ user, onOpenChat }) {
         ) : null}
 
         {/* Contacts */}
-        <div className="mb-6 bg-white border border-[#d9e2e1] rounded-2xl p-5">
-          <h3 className="text-lg font-bold text-[#10201f]">
+        <div
+          className="
+            mb-6
+            bg-white dark:bg-[#151c1b]
+            border border-[#d9e2e1] dark:border-[#303c39]
+            rounded-2xl
+            p-5
+            transition-colors duration-300
+          "
+        >
+          <h3 className="text-lg font-bold text-[#10201f] dark:text-white">
             Your Contacts
           </h3>
 
           {contactsLoading ? (
-            <p className="mt-3 text-sm text-[#566867]">
+            <p className="mt-3 text-sm text-[#566867] dark:text-[#aab8b5]">
               Loading contacts...
             </p>
           ) : contacts.length === 0 ? (
-            <p className="mt-3 text-sm text-[#566867]">
+            <p className="mt-3 text-sm text-[#566867] dark:text-[#aab8b5]">
               Your contacts will appear here.
             </p>
           ) : (
@@ -365,20 +411,24 @@ export default function Home({ user, onOpenChat }) {
               {contacts.map((contact) => (
                 <div
                   key={contact.id}
-                  className="border border-[#d9e2e1] rounded-xl p-4 flex items-center justify-between gap-4"
+                  className="
+                    border border-[#d9e2e1] dark:border-[#303c39]
+                    bg-white dark:bg-[#151c1b]
+                    rounded-xl
+                    p-4
+                    flex items-center justify-between
+                    gap-4
+                    transition-colors duration-300
+                  "
                 >
-                  <div>
-                    <p className="font-semibold text-[#10201f]">
+                  <div className="min-w-0">
+                    <p className="font-semibold text-[#10201f] dark:text-white">
                       {contact.contactProfile?.fullName ||
                         "Unknown user"}
                     </p>
 
-                    <p className="text-sm text-[#566867]">
-                      {contactStatuses[
-                        contact.contactProfile?.uid
-                      ]?.online
-                        ? "Online"
-                        : "Offline"}
+                    <p className="text-sm text-[#566867] dark:text-[#aab8b5]">
+                      Connected
                     </p>
                   </div>
 
@@ -387,7 +437,17 @@ export default function Home({ user, onOpenChat }) {
                     onClick={() =>
                       onOpenChat(contact.contactProfile)
                     }
-                    className="px-3 py-2 rounded-lg bg-teal-700 hover:bg-[#0b5f58] text-white text-xs font-semibold transition"
+                    className="
+                      flex-shrink-0
+                      px-3 py-2
+                      rounded-lg
+                      bg-teal-700
+                      hover:bg-[#0b5f58]
+                      text-white
+                      text-xs font-semibold
+                      transition-colors duration-300
+                      cursor-pointer
+                    "
                   >
                     Chat
                   </button>
@@ -397,13 +457,22 @@ export default function Home({ user, onOpenChat }) {
           )}
         </div>
 
-        {/* Find someone */}
-        <div className="mb-6 bg-white border border-[#d9e2e1] rounded-2xl p-5">
-          <h3 className="text-lg font-bold text-[#10201f]">
+        {/* Find Someone */}
+        <div
+          className="
+            mb-6
+            bg-white dark:bg-[#151c1b]
+            border border-[#d9e2e1] dark:border-[#303c39]
+            rounded-2xl
+            p-5
+            transition-colors duration-300
+          "
+        >
+          <h3 className="text-lg font-bold text-[#10201f] dark:text-white">
             Find someone
           </h3>
 
-          <p className="mt-1 text-sm text-[#566867]">
+          <p className="mt-1 text-sm text-[#566867] dark:text-[#aab8b5]">
             Search by name.
           </p>
 
@@ -416,13 +485,42 @@ export default function Home({ user, onOpenChat }) {
               value={searchName}
               onChange={(e) => setSearchName(e.target.value)}
               placeholder="Enter name"
-              className="flex-1 h-11 px-4 border border-[#b3c2c0] rounded-[10px] bg-white text-[#10201f] placeholder:text-[#566867]/60 focus:outline-none focus:ring-2 focus:ring-teal-700 focus:border-transparent transition"
+              className="
+                min-w-0
+                flex-1
+                h-11
+                px-4
+                border border-[#b3c2c0] dark:border-[#46534f]
+                rounded-[10px]
+                bg-white dark:bg-[#101615]
+                text-[#10201f] dark:text-white
+                placeholder:text-[#566867]/60
+                dark:placeholder:text-[#7f908b]
+                focus:outline-none
+                focus:ring-2
+                focus:ring-teal-700
+                focus:border-transparent
+                transition-colors duration-300
+              "
             />
 
             <button
               type="submit"
               disabled={searchLoading}
-              className="h-11 px-5 rounded-[10px] bg-teal-700 hover:bg-[#0b5f58] text-white font-semibold transition cursor-pointer disabled:opacity-70 disabled:cursor-wait"
+              className="
+                flex-shrink-0
+                h-11
+                px-5
+                rounded-[10px]
+                bg-teal-700
+                hover:bg-[#0b5f58]
+                text-white
+                font-semibold
+                transition-colors duration-300
+                cursor-pointer
+                disabled:opacity-70
+                disabled:cursor-wait
+              "
             >
               {searchLoading ? "Searching..." : "Search"}
             </button>
@@ -430,7 +528,7 @@ export default function Home({ user, onOpenChat }) {
 
           {searchError && (
             <p
-              className="mt-3 text-sm text-[#b42318]"
+              className="mt-3 text-sm text-[#b42318] dark:text-[#ff8f85]"
               role="alert"
             >
               {searchError}
@@ -440,14 +538,23 @@ export default function Home({ user, onOpenChat }) {
           {searchResults.map((result) => (
             <div
               key={result.uid}
-              className="mt-4 border border-[#d9e2e1] rounded-xl p-4 flex items-center justify-between gap-4"
+              className="
+                mt-4
+                border border-[#d9e2e1] dark:border-[#303c39]
+                bg-white dark:bg-[#151c1b]
+                rounded-xl
+                p-4
+                flex items-center justify-between
+                gap-4
+                transition-colors duration-300
+              "
             >
-              <div>
-                <p className="font-semibold text-[#10201f]">
+              <div className="min-w-0">
+                <p className="font-semibold text-[#10201f] dark:text-white">
                   {result.fullName}
                 </p>
 
-                <p className="text-sm text-[#566867]">
+                <p className="text-sm text-[#566867] dark:text-[#aab8b5]">
                   User found
                 </p>
               </div>
@@ -456,7 +563,15 @@ export default function Home({ user, onOpenChat }) {
                 type="button"
                 onClick={() => handleAddContact(result.uid)}
                 disabled={requestLoading === result.uid}
-                className="text-xs font-semibold text-teal-700 hover:text-[#0b5f58] disabled:opacity-50"
+                className="
+                  flex-shrink-0
+                  text-xs
+                  font-semibold
+                  text-teal-700 dark:text-teal-400
+                  hover:text-[#0b5f58] dark:hover:text-teal-300
+                  disabled:opacity-50
+                  cursor-pointer
+                "
               >
                 {requestLoading === result.uid
                   ? "Sending..."
@@ -466,16 +581,24 @@ export default function Home({ user, onOpenChat }) {
           ))}
 
           {requestMessage && (
-            <p className="mt-3 text-sm text-teal-700">
+            <p className="mt-3 text-sm text-teal-700 dark:text-teal-400">
               {requestMessage}
             </p>
           )}
         </div>
 
-        {/* Rejected requests */}
+        {/* Rejected Requests */}
         {rejectedRequests.length > 0 && (
-          <div className="bg-white border border-[#d9e2e1] rounded-2xl p-5">
-            <h3 className="text-lg font-bold text-[#10201f]">
+          <div
+            className="
+              bg-white dark:bg-[#151c1b]
+              border border-[#d9e2e1] dark:border-[#303c39]
+              rounded-2xl
+              p-5
+              transition-colors duration-300
+            "
+          >
+            <h3 className="text-lg font-bold text-[#10201f] dark:text-white">
               Rejected Requests
             </h3>
 
@@ -483,14 +606,20 @@ export default function Home({ user, onOpenChat }) {
               {rejectedRequests.map((request) => (
                 <div
                   key={request.id}
-                  className="border border-[#d9e2e1] rounded-xl p-4"
+                  className="
+                    border border-[#d9e2e1] dark:border-[#303c39]
+                    bg-white dark:bg-[#151c1b]
+                    rounded-xl
+                    p-4
+                    transition-colors duration-300
+                  "
                 >
-                  <p className="font-semibold text-[#10201f]">
+                  <p className="font-semibold text-[#10201f] dark:text-white">
                     {request.otherUserProfile?.fullName ||
                       "Unknown user"}
                   </p>
 
-                  <p className="text-sm text-[#566867]">
+                  <p className="text-sm text-[#566867] dark:text-[#aab8b5]">
                     Connection request rejected.
                   </p>
                 </div>
