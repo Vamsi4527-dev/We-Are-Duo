@@ -4,13 +4,28 @@ import {
   listenToMessages,
   sendMessage,
 } from "../firebase/chat";
+import { listenToUserStatus } from "../firebase/presence";
 
 export default function Chat({ user, contact, onBack }) {
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
   const [sending, setSending] = useState(false);
+  const [contactStatus, setContactStatus] = useState({
+    online: false,
+    lastSeen: null,
+  });
 
   const chatId = getChatId(user.uid, contact.uid);
+  useEffect(() => {
+    const unsubscribe = listenToUserStatus(
+      contact.uid,
+      (status) => {
+        setContactStatus(status);
+      }
+    );
+
+    return unsubscribe;
+  }, [contact.uid]);
 
   useEffect(() => {
     const unsubscribe = listenToMessages(chatId, (newMessages) => {
@@ -58,9 +73,15 @@ export default function Chat({ user, contact, onBack }) {
             {contact.fullName}
           </h1>
 
-          <p className="text-xs text-[#566867]">
-            Private conversation
+          <p
+            className={`text-xs font-medium ${
+              contactStatus.online
+                ? "text-teal-700"
+                : "text-[#566867]"
+            }`}>
+            {contactStatus.online ? "● Online" : "● Offline"}
           </p>
+
         </div>
       </header>
 
@@ -110,14 +131,14 @@ export default function Chat({ user, contact, onBack }) {
               value={messageText}
               onChange={(e) => setMessageText(e.target.value)}
               placeholder="Type a message..."
-              className="flex-1 h-11 px-4 border border-[#b3c2c0] rounded-xl bg-white text-[#10201f] placeholder:text-[#566867]/60 focus:outline-none focus:ring-2 focus:ring-teal-700 focus:border-transparent"
-            />
+              className="min-w-0 flex-1 h-11 px-4 border border-[#b3c2c0] 
+              rounded-xl bg-white text-[#10201f] placeholder:text-[#566867]/60 focus:outline-none focus:ring-2 focus:ring-teal-700 focus:border-transparent"/>
 
             <button
               type="submit"
               disabled={sending || !messageText.trim()}
-              className="h-11 px-5 rounded-xl bg-teal-700 hover:bg-[#0b5f58] text-white font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
-            >
+              className="flex-shrink-0 h-11 px-5 rounded-xl bg-teal-700 hover:bg-[#0b5f58] 
+              text-white font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed">
               {sending ? "..." : "Send"}
             </button>
           </form>
