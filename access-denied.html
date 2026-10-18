@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Access denied · Duet</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+  <div class="auth">
+
+    <aside class="auth__aside" aria-hidden="true">
+      <div class="logo logo--lg">
+        <span class="logo__mark"></span>
+        <span>Duet</span>
+      </div>
+      <div class="auth-preview">
+        <p class="auth-preview__bubble auth-preview__bubble--in">Two rings. Two people.</p>
+        <p class="auth-preview__bubble auth-preview__bubble--out">No room for a third.</p>
+      </div>
+      <p class="auth__tagline">This conversation belongs to two people only.</p>
+    </aside>
+
+    <main class="auth__main">
+
+      <a class="logo auth__brand" href="index.html">
+        <span class="logo__mark" aria-hidden="true"></span>
+        <span>Duet</span>
+      </a>
+
+      <section class="card auth-card" aria-labelledby="denied-title">
+
+        <div class="auth-card__icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="4" y="11" width="16" height="10" rx="2"/>
+            <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+          </svg>
+        </div>
+
+        <header class="auth-card__header">
+          <h1 id="denied-title">This chat is private</h1>
+          <p>
+            jamie@example.com isn't one of the two approved users, so you can't
+            open this conversation.
+          </p>
+        </header>
+
+        <div class="alert alert--warning">
+          <div>
+            <span class="alert__title">Think this is a mistake?</span>
+            Ask one of the approved users to check that your email address
+            matches the one on the approved list.
+          </div>
+        </div>
+
+        <div class="auth-card__actions">
+          <a class="btn btn--primary btn--block" href="login.html">Sign out</a>
+          <a class="btn btn--secondary btn--block" href="index.html">Back to start</a>
+        </div>
+
+        <p class="demo-note">
+          <span class="demo-badge">Demo</span>
+          Deciding who is approved needs a backend. Later, Firebase security rules
+          will do this check, not the page itself.
+        </p>
+      </section>
+
+    </main>
+  </div>
+
+</body>
+</html>

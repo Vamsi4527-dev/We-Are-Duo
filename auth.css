@@ -1,0 +1,357 @@
+/* =========================================================
+   Duet — entry screens (auth.css)
+   Used by: index.html (splash), login.html, register.html,
+            forgot-password.html, access-denied.html
+   Load AFTER styles.css.
+
+   Sections
+   1. Splash screen
+   2. Page layout (mobile first)
+   3. Auth card
+   4. Password requirements list
+   5. Prototype-state panel (demo only)
+   6. Decorative side panel
+   7. Responsive rules (tablet and desktop)
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   1. SPLASH SCREEN
+   The one deliberate animation in the app: the two logo rings
+   slide apart once when the page loads.
+   --------------------------------------------------------- */
+.splash {
+  display: grid;
+  place-items: center;
+  min-block-size: 100dvh;
+  padding: var(--space-6) var(--space-4);
+  text-align: center;
+}
+
+.splash__inner {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-5);
+  max-inline-size: 22rem;
+}
+
+.splash__tagline {
+  color: var(--color-muted);
+}
+
+/* Indeterminate loading bar: a short bar sweeps across a track */
+.loader {
+  position: relative;
+  inline-size: 8rem;
+  block-size: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-2);
+  overflow: hidden;
+}
+
+.loader::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inline-size: 40%;
+  border-radius: inherit;
+  background: var(--color-primary);
+  animation: loader-sweep 1.2s ease-in-out infinite;
+}
+
+@keyframes loader-sweep {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(250%); }
+}
+
+/* The rings start fully overlapped, then settle into the logo shape.
+   0.325em = half of the visible gap between the two rings (see styles.css). */
+.logo--animated .logo__mark::before {
+  animation: ring-left 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.logo--animated .logo__mark::after {
+  animation: ring-right 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes ring-left {
+  from { transform: translateX(0.325em); }
+  to   { transform: none; }
+}
+
+@keyframes ring-right {
+  from { transform: translateX(-0.325em); }
+  to   { transform: none; }
+}
+
+
+/* ---------------------------------------------------------
+   2. PAGE LAYOUT (mobile first)
+   .auth       = whole page
+   .auth__aside = decorative panel, hidden until desktop
+   .auth__main  = the column that holds the form
+   --------------------------------------------------------- */
+.auth {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-block-size: 100dvh;
+}
+
+.auth__aside {
+  display: none;
+}
+
+.auth__main {
+  --auth-width: 26rem; /* shared by the card and the demo panel */
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  padding: var(--space-6) var(--space-4);
+}
+
+
+/* ---------------------------------------------------------
+   3. AUTH CARD
+   --------------------------------------------------------- */
+.auth-card {
+  display: grid;
+  gap: var(--space-5);
+  inline-size: 100%;
+  max-inline-size: var(--auth-width);
+  padding: var(--space-5);
+}
+
+.auth-card__header {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.auth-card__header p {
+  color: var(--color-muted);
+}
+
+.auth__switch {
+  font-size: var(--text-sm);
+  text-align: center;
+  color: var(--color-muted);
+}
+
+.auth__switch a {
+  font-weight: 600;
+}
+
+/* Lock icon on the access-denied screen (drawn with an inline SVG) */
+.auth-card__icon {
+  display: grid;
+  place-items: center;
+  inline-size: 3.5rem;
+  block-size: 3.5rem;
+  border-radius: 50%;
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+}
+
+.auth-card__actions {
+  display: grid;
+  gap: var(--space-3);
+}
+
+
+/* ---------------------------------------------------------
+   4. PASSWORD REQUIREMENTS LIST
+   Met = filled circle with a tick. Not met = empty ring.
+   Hidden text ("Met:" / "Not met:") tells screen-reader users
+   the same thing the icons tell sighted users.
+   --------------------------------------------------------- */
+.requirements {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+.requirement {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.requirement::before {
+  content: "";
+  flex: none;
+  display: grid;
+  place-items: center;
+  inline-size: 1rem;
+  block-size: 1rem;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: 50%;
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.requirement--met {
+  color: var(--color-text);
+}
+
+.requirement--met::before {
+  content: "\2713";
+  border-color: var(--color-success);
+  background: var(--color-success);
+  color: var(--color-success-soft);
+}
+
+
+/* ---------------------------------------------------------
+   5. PROTOTYPE-STATE PANEL (demo only)
+   Dashed border = "this is a demonstration, not real behaviour".
+   It shows error, loading and disabled states without any JavaScript.
+   --------------------------------------------------------- */
+.demo-panel {
+  display: grid;
+  gap: var(--space-5);
+  inline-size: 100%;
+  max-inline-size: var(--auth-width);
+  padding: var(--space-5);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-card);
+}
+
+.demo-panel__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.demo-panel__title {
+  font-size: var(--text-base);
+}
+
+.demo-item {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.demo-item__label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.demo-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+}
+
+.demo-links a {
+  display: inline-block;
+  padding-block: var(--space-2);
+  font-weight: 600;
+}
+
+
+/* ---------------------------------------------------------
+   6. DECORATIVE SIDE PANEL
+   A tiny made-up conversation. It is decoration only, so the
+   HTML marks it aria-hidden="true".
+   --------------------------------------------------------- */
+.auth-preview {
+  display: grid;
+  gap: var(--space-2);
+  max-inline-size: 22rem;
+}
+
+.auth-preview__bubble {
+  max-inline-size: 85%;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-message);
+  font-size: var(--text-sm);
+}
+
+.auth-preview__bubble--in {
+  justify-self: start;
+  border: 1px solid var(--color-border);
+  border-end-start-radius: 0.375rem;
+  background: var(--color-surface);
+}
+
+.auth-preview__bubble--out {
+  justify-self: end;
+  border-end-end-radius: 0.375rem;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.auth__tagline {
+  max-inline-size: 14em;
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+
+/* ---------------------------------------------------------
+   7. RESPONSIVE RULES
+   Mobile  : below 768px  (the default styles above)
+   Tablet  : 768px to 1023px
+   Desktop : 1024px and above
+   --------------------------------------------------------- */
+
+/* Tablet: roomier card */
+@media (min-width: 768px) {
+  .auth__main {
+    --auth-width: 30rem;
+    padding: var(--space-7) var(--space-6);
+  }
+
+  .auth-card {
+    padding: var(--space-6);
+  }
+
+  .demo-panel {
+    padding: var(--space-6);
+  }
+}
+
+/* Desktop: show the side panel next to the form */
+@media (min-width: 1024px) {
+  .auth {
+    grid-template-columns: minmax(22rem, 5fr) 6fr;
+  }
+
+  .auth__aside {
+    position: sticky;
+    inset-block-start: 0;
+    align-self: start;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: var(--space-6);
+    block-size: 100dvh;
+    padding: var(--space-7);
+    border-inline-end: 1px solid var(--color-border);
+    background: var(--color-primary-soft);
+  }
+
+  .auth__aside .auth-preview {
+    align-self: center;
+  }
+
+  /* The logo already appears in the side panel */
+  .auth__brand {
+    display: none;
+  }
+}

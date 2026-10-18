@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes loaderSweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+.animate-loader-sweep {
+  animation: loaderSweep 1.2s ease-in-out infinite;
+}
+
+@keyframes ringLeft {
+  from {
+    transform: translateX(0.325em);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes ringRight {
+  from {
+    transform: translateX(-0.325em);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.animate-ring-left {
+  animation: ringLeft 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.animate-ring-right {
+  animation: ringRight 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}

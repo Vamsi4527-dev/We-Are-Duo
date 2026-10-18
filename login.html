@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in · Duet</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+
+  <div class="auth">
+
+    <!-- Decorative panel: only visible on desktop widths -->
+    <aside class="auth__aside" aria-hidden="true">
+      <div class="logo logo--lg">
+        <span class="logo__mark"></span>
+        <span>Duet</span>
+      </div>
+      <div class="auth-preview">
+        <p class="auth-preview__bubble auth-preview__bubble--in">Landed. Heading to the hotel now.</p>
+        <p class="auth-preview__bubble auth-preview__bubble--out">Great. Text me when you're settled.</p>
+        <p class="auth-preview__bubble auth-preview__bubble--in">Will do.</p>
+      </div>
+      <p class="auth__tagline">A private place for exactly two people.</p>
+    </aside>
+
+    <main class="auth__main">
+
+      <a class="logo auth__brand" href="index.html">
+        <span class="logo__mark" aria-hidden="true"></span>
+        <span>Duet</span>
+      </a>
+
+      <section class="card auth-card" aria-labelledby="login-title">
+        <header class="auth-card__header">
+          <h1 id="login-title">Sign in</h1>
+          <p>Welcome back. Sign in to open your conversation.</p>
+        </header>
+
+        <!-- Prototype only: this form is not connected to anything.
+             method="post" keeps typed passwords out of the address bar. -->
+        <form class="form" action="#" method="post">
+
+          <div class="field">
+            <label class="label" for="login-email">Email address</label>
+            <input class="input" id="login-email" name="email" type="email"
+                   autocomplete="email" placeholder="alex@example.com" required>
+          </div>
+
+          <div class="field">
+            <div class="field__row">
+              <label class="label" for="login-password">Password</label>
+              <a href="forgot-password.html">Forgot password?</a>
+            </div>
+            <div class="input-wrap">
+              <input class="input" id="login-password" name="password" type="password"
+                     autocomplete="current-password" required>
+              <!-- Visual placeholder: switching the password to visible text needs JavaScript -->
+              <button class="input-action" type="button" aria-label="Show password">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <label class="check">
+            <input type="checkbox" name="remember">
+            <span>Remember me on this device</span>
+          </label>
+
+          <button class="btn btn--primary btn--block" type="submit">Sign in</button>
+        </form>
+
+        <p class="auth__switch">
+          Don't have an account? <a href="register.html">Create one</a>
+        </p>
+      </section>
+
+      <!-- ===== Prototype states: demonstrations, not real behaviour ===== -->
+      <section class="demo-panel" aria-labelledby="login-demo-title">
+        <header class="demo-panel__header">
+          <h2 class="demo-panel__title" id="login-demo-title">Prototype states</h2>
+          <span class="demo-badge">Demo only</span>
+        </header>
+
+        <div class="demo-item">
+          <p class="demo-item__label">Sign-in failed</p>
+          <div class="alert alert--error" role="alert">
+            <div>
+              <span class="alert__title">Couldn't sign in</span>
+              The email or password is incorrect. Check both and try again.
+            </div>
+          </div>
+        </div>
+
+        <div class="demo-item">
+          <p class="demo-item__label">Invalid email</p>
+          <div class="field">
+            <label class="label" for="demo-login-email">Email address</label>
+            <input class="input" id="demo-login-email" type="email" value="alex@"
+                   aria-invalid="true" aria-describedby="demo-login-email-error" readonly>
+            <p class="field-error" id="demo-login-email-error">
+              Enter a full email address, like name@example.com.
+            </p>
+          </div>
+        </div>
+
+        <div class="demo-item">
+          <p class="demo-item__label">Missing password</p>
+          <div class="field">
+            <label class="label" for="demo-login-password">Password</label>
+            <input class="input" id="demo-login-password" type="password"
+                   aria-invalid="true" aria-describedby="demo-login-password-error" readonly>
+            <p class="field-error" id="demo-login-password-error">Enter your password.</p>
+          </div>
+        </div>
+
+        <div class="demo-item">
+          <p class="demo-item__label">Loading button</p>
+          <button class="btn btn--primary btn--block" type="button" disabled aria-busy="true">
+            <span class="spinner" aria-hidden="true"></span>
+            Signing in…
+          </button>
+        </div>
+
+        <div class="demo-item">
+          <p class="demo-item__label">Disabled button (form not complete)</p>
+          <button class="btn btn--primary btn--block" type="button" disabled>Sign in</button>
+        </div>
+
+        <div class="demo-item">
+          <p class="demo-item__label">Jump to other screens</p>
+          <ul class="demo-links">
+            <li><a href="chat.html">Chat</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="access-denied.html">Access denied</a></li>
+          </ul>
+          <p class="demo-note">Chat and settings are built in the next parts.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+</body>
+</html>

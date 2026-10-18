@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create account · Duet</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+
+  <div class="auth">
+
+    <aside class="auth__aside" aria-hidden="true">
+      <div class="logo logo--lg">
+        <span class="logo__mark"></span>
+        <span>Duet</span>
+      </div>
+      <div class="auth-preview">
+        <p class="auth-preview__bubble auth-preview__bubble--in">Did you manage to sign up?</p>
+        <p class="auth-preview__bubble auth-preview__bubble--out">Yes. Now I just need to be approved.</p>
+        <p class="auth-preview__bubble auth-preview__bubble--in">Done on my side.</p>
+      </div>
+      <p class="auth__tagline">Only two people get in. Everyone else stays out.</p>
+    </aside>
+
+    <main class="auth__main">
+
+      <a class="logo auth__brand" href="index.html">
+        <span class="logo__mark" aria-hidden="true"></span>
+        <span>Duet</span>
+      </a>
+
+      <section class="card auth-card" aria-labelledby="register-title">
+        <header class="auth-card__header">
+          <h1 id="register-title">Create your account</h1>
+          <p>Set up your details to request access.</p>
+        </header>
+
+        <!-- Explains the two-user rule up front -->
+        <div class="alert">
+          <div>
+            <span class="alert__title">Creating an account doesn't open the chat</span>
+            Only the two approved users can enter. Your account is checked against
+            that list before you get access.
+          </div>
+        </div>
+
+        <!-- Prototype only: not connected to anything -->
+        <form class="form" action="#" method="post">
+
+          <div class="field">
+            <label class="label" for="register-name">Full name</label>
+            <input class="input" id="register-name" name="name" type="text"
+                   autocomplete="name" placeholder="Alex Morgan" required>
+          </div>
+
+          <div class="field">
+            <label class="label" for="register-email">Email address</label>
+            <input class="input" id="register-email" name="email" type="email"
+                   autocomplete="email" placeholder="alex@example.com" required>
+          </div>
+
+          <div class="field">
+            <label class="label" for="register-password">Password</label>
+            <div class="input-wrap">
+              <input class="input" id="register-password" name="password" type="password"
+                     autocomplete="new-password" minlength="8"
+                     aria-describedby="register-password-rules" required>
+              <button class="input-action" type="button" aria-label="Show password">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Static example of the requirement checklist.
+                 Updating it as you type needs JavaScript. -->
+            <ul class="requirements" id="register-password-rules" aria-label="Password requirements">
+              <li class="requirement requirement--met">
+                <span class="visually-hidden">Met: </span>At least 8 characters
+              </li>
+              <li class="requirement requirement--met">
+                <span class="visually-hidden">Met: </span>One uppercase letter
+              </li>
+              <li class="requirement">
+                <span class="visually-hidden">Not met: </span>One number
+              </li>
+            </ul>
+          </div>
+
+          <div class="field">
+            <label class="label" for="register-confirm">Confirm password</label>
+            <input class="input" id="register-confirm" name="confirm-password" type="password"
+                   autocomplete="new-password" minlength="8" required>
+          </div>
+
+          <label class="check">
+            <input type="checkbox" name="terms" required>
+            <span>I understand this chat is limited to two approved users, and I accept the terms of use.</span>
+          </label>
+
+          <button class="btn btn--primary btn--block" type="submit">Create account</button>
+        </form>
+
+        <p class="auth__switch">
+          Already have an account? <a href="login.html">Sign in</a>
+        </p>
+      </section>
+
+      <!-- ===== Prototype states: demonstrations, not real behaviour ===== -->
+      <section class="demo-panel" aria-labelledby="register-demo-title">
+        <header class="demo-panel__header">
+          <h2 class="demo-panel__title" id="register-demo-title">Prototype states</h2>
+          <span class="demo-badge">Demo only</span>
+        </header>
+
+        <div class="demo-item">
+          <p class="demo-item__label">Passwords don't match</p>
+          <div class="field">
+            <label class="label" for="demo-register-confirm">Confirm password</label>
+            <input class="input" id="demo-register-confirm" type="password" value="example"
+                   aria-invalid="true" aria-describedby="demo-register-confirm-error" readonly>
+            <p class="field-error" id="demo-register-confirm-error">
+              Passwords don't match. Enter the same password in both fields.
+            </p>
+          </div>
+        </div>
+
+        <div class="demo-item">
+          <p class="demo-item__label">Email already in use</p>
+          <div class="alert alert--error" role="alert">
+            <div>
+              <span class="alert__title">Account already exists</span>
+              An account with this email address already exists.
+              <a href="login.html">Sign in instead</a>.
+            </div>
+          </div>
+        </div>
+
+        <div class="demo-item">
+          <p class="demo-item__label">Account created</p>
+          <div class="alert alert--success" role="status">
+            <div>
+              <span class="alert__title">Account created</span>
+              You can open the chat once this email is confirmed as an approved user.
+            </div>
+          </div>
+        </div>
+
+        <div class="demo-item">
+          <p class="demo-item__label">Loading button</p>
+          <button class="btn btn--primary btn--block" type="button" disabled aria-busy="true">
+            <span class="spinner" aria-hidden="true"></span>
+            Creating account…
+          </button>
+        </div>
+
+        <div class="demo-item">
+          <p class="demo-item__label">Disabled button (terms not accepted)</p>
+          <button class="btn btn--primary btn--block" type="button" disabled>Create account</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+</body>
+</html>
