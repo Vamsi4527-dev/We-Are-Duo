@@ -15,6 +15,7 @@ export default function Chat({ user, contact, onBack }) {
   const [messageText, setMessageText] = useState("");
   const [sending, setSending] = useState(false);
   const [replyingTo, setReplyingTo] = useState(null);
+  const messagesEndRef = useRef(null);
 
   const [contactStatus, setContactStatus] = useState({
     online: false,
@@ -52,6 +53,13 @@ export default function Chat({ user, contact, onBack }) {
 
     return unsubscribe;
   }, [chatId]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [messages]);
+
 
   /* =========================================================
      SELECT MESSAGE FOR REPLY
@@ -254,6 +262,7 @@ export default function Chat({ user, contact, onBack }) {
                 );
               })
             )}
+            <div ref={messagesEndRef} />
           </div>
 
           {/* =================================================

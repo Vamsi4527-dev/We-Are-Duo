@@ -12,6 +12,7 @@ import Home from "./components/Home";
 import Chat from "./components/Chat";
 import Logo from "./components/Logo";
 import ThemeToggle from "./components/ThemeToggle";
+import Footer from "./components/Footer";
 import { setUserOnline, setUserOffline } from "./firebase/presence";
 
 export default function App() {
@@ -333,6 +334,11 @@ export default function App() {
         )}
 
       </div>
+      {!(
+        currentScreen === "home" &&
+        user &&
+        selectedContact
+      ) && <Footer />}
     </div>
   );
 }
