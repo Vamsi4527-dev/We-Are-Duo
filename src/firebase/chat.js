@@ -19,7 +19,8 @@ export async function sendMessage(
   chatId,
   senderId,
   receiverId,
-  text
+  text,
+  replyTo = null
 ) {
   const chatRef = doc(db, "chats", chatId);
 
@@ -38,11 +39,22 @@ export async function sendMessage(
     "messages"
   );
 
-  await addDoc(messagesRef, {
+  const messageData = {
     senderId,
     text: text.trim(),
     createdAt: serverTimestamp(),
-  });
+  };
+
+  // Add reply information only when replying to a message
+  if (replyTo) {
+    messageData.replyTo = {
+      messageId: replyTo.messageId,
+      senderId: replyTo.senderId,
+      text: replyTo.text,
+    };
+  }
+
+  await addDoc(messagesRef, messageData);
 }
 
 export function listenToMessages(chatId, callback) {

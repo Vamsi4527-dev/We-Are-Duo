@@ -61,6 +61,11 @@ export default function App() {
     setMobileMenuOpen(false);
   };
 
+  const isChatScreen =
+  currentScreen === "home" &&
+  user &&
+  selectedContact;
+
   if (authLoading) {
     return (
       <div className="min-h-screen grid place-items-center bg-[#f3f6f6] dark:bg-[#0d1211]">
@@ -72,7 +77,12 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f3f6f6] dark:bg-[#0d1211] flex flex-col transition-colors duration-300">
+    <div
+  className={`${
+    isChatScreen
+      ? "h-[100dvh] overflow-hidden"
+      : "min-h-screen"
+  } bg-[#f3f6f6] dark:bg-[#0d1211] flex flex-col transition-colors duration-300`}>
 
       {/* Public Navigation */}
       {!user && (
@@ -270,7 +280,12 @@ export default function App() {
       )}
 
       {/* Page Content */}
-      <div className="flex-1">
+      <div
+        className={`flex-1 ${
+          isChatScreen
+            ? "min-h-0 overflow-hidden"
+            : ""
+        }`}>
 
         {/* Splash */}
         {currentScreen === "splash" && (
