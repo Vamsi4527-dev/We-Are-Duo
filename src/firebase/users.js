@@ -74,21 +74,51 @@ export async function searchUsersByName(name) {
 }
 
 export async function sendConnectionRequest(senderId, receiverId) {
+  if (!senderId || !receiverId) {
+    throw new Error("Invalid sender or receiver ID.");
+  }
+
+  // Prevent users from connecting with themselves
+  if (senderId === receiverId) {
+    return {
+      success: false,
+      reason: "self-request",
+    };
+  }
+
   const requestsRef = collection(db, "connectionRequests");
 
-  const existingQuery = query(
+  // Check if a request already exists in either direction
+  const sentQuery = query(
     requestsRef,
     where("senderId", "==", senderId),
-    where("receiverId", "==", receiverId),
-    where("status", "==", "pending")
+    where("receiverId", "==", receiverId)
   );
 
-  const existingSnapshot = await getDocs(existingQuery);
+  const receivedQuery = query(
+    requestsRef,
+    where("senderId", "==", receiverId),
+    where("receiverId", "==", senderId)
+  );
 
-  if (!existingSnapshot.empty) {
+  const [sentSnapshot, receivedSnapshot] = await Promise.all([
+    getDocs(sentQuery),
+    getDocs(receivedQuery),
+  ]);
+
+  const allRequests = [...sentSnapshot.docs, ...receivedSnapshot.docs];
+
+  if (allRequests.some((docSnap) => docSnap.data().status === "pending")) {
     return {
       success: false,
       reason: "already-pending",
+    };
+  }
+
+  if (allRequests.some((docSnap) => docSnap.data().status === "accepted")) {
+    return {
+      success: false,
+      reason: "already-connected",
     };
   }
 
@@ -140,25 +170,45 @@ export function listenToIncomingConnectionRequests(userId, callback) {
   });
 }
 
-export async function acceptConnectionRequest(requestId) {
+export async function acceptConnectionRequest(requestId, currentUserId) {
   const requestRef = doc(db, "connectionRequests", requestId);
+  const snap = await getDoc(requestRef);
+
+  if (!snap.exists()) {
+    throw new Error("Request does not exist.");
+  }
+
+  if (currentUserId && snap.data().receiverId !== currentUserId) {
+    throw new Error("Unauthorized: Only the recipient can accept this connection request.");
+  }
 
   await setDoc(
     requestRef,
     {
       status: "accepted",
+      updatedAt: serverTimestamp(),
     },
     { merge: true }
   );
 }
 
-export async function rejectConnectionRequest(requestId) {
+export async function rejectConnectionRequest(requestId, currentUserId) {
   const requestRef = doc(db, "connectionRequests", requestId);
+  const snap = await getDoc(requestRef);
+
+  if (!snap.exists()) {
+    throw new Error("Request does not exist.");
+  }
+
+  if (currentUserId && snap.data().receiverId !== currentUserId) {
+    throw new Error("Unauthorized: Only the recipient can reject this connection request.");
+  }
 
   await setDoc(
     requestRef,
     {
       status: "rejected",
+      updatedAt: serverTimestamp(),
     },
     { merge: true }
   );

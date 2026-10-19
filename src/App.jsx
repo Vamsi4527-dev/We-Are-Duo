@@ -13,7 +13,7 @@ import Chat from "./components/Chat";
 import Logo from "./components/Logo";
 import ThemeToggle from "./components/ThemeToggle";
 import Footer from "./components/Footer";
-import { setUserOnline, setUserOffline } from "./firebase/presence";
+import { trackUserPresence, setUserOffline } from "./firebase/presence";
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState("splash");
@@ -46,11 +46,12 @@ export default function App() {
       return;
     }
 
-    setUserOnline(user.uid).catch((error) => {
-      console.error("Failed to set user online:", error);
-    });
+    const unsubscribePresence = trackUserPresence(user.uid);
 
     return () => {
+      if (typeof unsubscribePresence === "function") {
+        unsubscribePresence();
+      }
       setUserOffline(user.uid).catch((error) => {
         console.error("Failed to set user offline:", error);
       });

@@ -15,6 +15,8 @@ export function getChatId(userId1, userId2) {
   return [userId1, userId2].sort().join("_");
 }
 
+export const MAX_MESSAGE_LENGTH = 2000;
+
 export async function sendMessage(
   chatId,
   senderId,
@@ -22,6 +24,26 @@ export async function sendMessage(
   text,
   replyTo = null
 ) {
+  // Input validation
+  if (!text || typeof text !== "string") {
+    throw new Error("Message text is required.");
+  }
+
+  const trimmedText = text.trim();
+  if (trimmedText.length === 0) {
+    throw new Error("Message cannot be empty.");
+  }
+
+  if (trimmedText.length > MAX_MESSAGE_LENGTH) {
+    throw new Error(`Message exceeds maximum limit of ${MAX_MESSAGE_LENGTH} characters.`);
+  }
+
+  // Verify chat ID integrity
+  const expectedChatId = getChatId(senderId, receiverId);
+  if (chatId !== expectedChatId) {
+    throw new Error("Invalid chat session ID.");
+  }
+
   const chatRef = doc(db, "chats", chatId);
 
   await setDoc(
@@ -41,16 +63,16 @@ export async function sendMessage(
 
   const messageData = {
     senderId,
-    text: text.trim(),
+    text: trimmedText,
     createdAt: serverTimestamp(),
   };
 
-  // Add reply information only when replying to a message
-  if (replyTo) {
+  // Add sanitized reply information only when replying to a message
+  if (replyTo && replyTo.messageId && replyTo.text) {
     messageData.replyTo = {
-      messageId: replyTo.messageId,
-      senderId: replyTo.senderId,
-      text: replyTo.text,
+      messageId: String(replyTo.messageId).slice(0, 100),
+      senderId: String(replyTo.senderId).slice(0, 100),
+      text: String(replyTo.text).slice(0, MAX_MESSAGE_LENGTH),
     };
   }
 

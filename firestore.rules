@@ -1,0 +1,64 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // User profile document: user can read/write their own; other authenticated users can read
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId);
+    }
+    
+    // Public searchable profiles
+    match /publicProfiles/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId);
+    }
+    
+    // Connection requests between users
+    match /connectionRequests/{requestId} {
+      allow read: if isAuthenticated() && 
+        (request.auth.uid == resource.data.senderId || request.auth.uid == resource.data.receiverId);
+        
+      allow create: if isAuthenticated() && 
+        request.auth.uid == request.resource.data.senderId &&
+        request.resource.data.status == 'pending';
+        
+      allow update: if isAuthenticated() && 
+        request.auth.uid == resource.data.receiverId &&
+        (request.resource.data.status == 'accepted' || request.resource.data.status == 'rejected');
+        
+      allow delete: if isAuthenticated() && 
+        (request.auth.uid == resource.data.senderId || request.auth.uid == resource.data.receiverId);
+    }
+    
+    // Chats and private messages between two connected users
+    match /chats/{chatId} {
+      allow read, write: if isAuthenticated() && 
+        request.auth.uid in resource.data.participants;
+        
+      allow create: if isAuthenticated() && 
+        request.auth.uid in request.resource.data.participants &&
+        request.resource.data.participants.size() == 2;
+        
+      match /messages/{messageId} {
+        allow read: if isAuthenticated() && 
+          request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.participants;
+          
+        allow create: if isAuthenticated() && 
+          request.auth.uid == request.resource.data.senderId &&
+          request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.participants &&
+          request.resource.data.text is string &&
+          request.resource.data.text.size() > 0 &&
+          request.resource.data.text.size() <= 2000;
+      }
+    }
+  }
+}

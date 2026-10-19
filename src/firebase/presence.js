@@ -8,6 +8,31 @@ import {
 
 import { realtimeDb } from "./config";
 
+export function trackUserPresence(uid) {
+  const connectedRef = ref(realtimeDb, ".info/connected");
+  const userStatusRef = ref(realtimeDb, `status/${uid}`);
+
+  return onValue(connectedRef, async (snapshot) => {
+    if (snapshot.val() === false) {
+      return;
+    }
+
+    try {
+      await onDisconnect(userStatusRef).set({
+        online: false,
+        lastSeen: serverTimestamp(),
+      });
+
+      await set(userStatusRef, {
+        online: true,
+        lastSeen: serverTimestamp(),
+      });
+    } catch (error) {
+      console.error("Error setting presence:", error);
+    }
+  });
+}
+
 export async function setUserOnline(uid) {
   const userStatusRef = ref(realtimeDb, `status/${uid}`);
 

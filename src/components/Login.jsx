@@ -7,6 +7,8 @@ export default function Login({ onNavigate }) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const previewMessages = [
     { text: "Landed. Heading to the hotel now.", incoming: true },
@@ -16,13 +18,28 @@ export default function Login({ onNavigate }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
     try {
+      setIsLoading(true);
       await loginUser(email, password);
-      alert("Signed in successfully!");
       onNavigate("home");
-    } catch (error) {
-      alert("Sign in failed: " + error.message);
+    } catch (err) {
+      console.error("Sign in failed:", err);
+      if (
+        err.code === "auth/invalid-credential" ||
+        err.code === "auth/user-not-found" ||
+        err.code === "auth/wrong-password" ||
+        err.code === "auth/invalid-email"
+      ) {
+        setError("Invalid email or password.");
+      } else if (err.code === "auth/too-many-requests") {
+        setError("Too many attempts. Please try again later.");
+      } else {
+        setError("Unable to sign in. Please verify your credentials and try again.");
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -54,6 +71,15 @@ export default function Login({ onNavigate }) {
           className="flex flex-col gap-5"
           method="post"
         >
+          {error && (
+            <div
+              className="bg-[#fdecea] dark:bg-[#2d1b1b] border border-[#f5c2c7] dark:border-[#5c2b2b] text-[#b42318] dark:text-[#ff8f85] rounded-xl p-3.5 text-sm"
+              role="alert"
+            >
+              {error}
+            </div>
+          )}
+
           <div className="flex flex-col gap-1.5">
             <label
               className="text-sm font-semibold text-[#10201f] dark:text-white"
@@ -162,9 +188,10 @@ export default function Login({ onNavigate }) {
 
           <button
             type="submit"
-            className="w-full h-11 px-5 rounded-[10px] bg-teal-700 hover:bg-[#0b5f58] text-white font-semibold transition cursor-pointer"
+            disabled={isLoading}
+            className="w-full h-11 px-5 rounded-[10px] bg-teal-700 hover:bg-[#0b5f58] text-white font-semibold transition cursor-pointer disabled:opacity-60 disabled:cursor-wait"
           >
-            Sign in
+            {isLoading ? "Signing in..." : "Sign in"}
           </button>
         </form>
 

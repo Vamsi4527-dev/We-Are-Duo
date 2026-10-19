@@ -689,6 +689,11 @@ function SwipeableMessage({
           {message.text}
         </p>
       </div>
+      {!(
+              currentScreen === "home" &&
+              user &&
+              selectedContact
+            ) && <Footer />}
     </div>
   );
 }

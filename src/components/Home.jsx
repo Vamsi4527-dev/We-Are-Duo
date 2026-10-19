@@ -186,7 +186,11 @@ export default function Home({ user, onOpenChat }) {
       if (result.success) {
         setRequestMessage("Connection request sent.");
       } else if (result.reason === "already-pending") {
-        setRequestMessage("Connection request already sent.");
+        setRequestMessage("Connection request already pending.");
+      } else if (result.reason === "already-connected") {
+        setRequestMessage("You are already connected with this user.");
+      } else if (result.reason === "self-request") {
+        setRequestMessage("You cannot send a connection request to yourself.");
       }
     } catch (error) {
       console.error("Connection request failed:", error);
@@ -196,10 +200,10 @@ export default function Home({ user, onOpenChat }) {
     }
   };
 
-  // Accept connection request
+  // Accept connection request with authorization
   const handleAcceptRequest = async (requestId) => {
     try {
-      await acceptConnectionRequest(requestId);
+      await acceptConnectionRequest(requestId, user?.uid);
     } catch (error) {
       console.error(
         "Failed to accept connection request:",
@@ -208,10 +212,10 @@ export default function Home({ user, onOpenChat }) {
     }
   };
 
-  // Reject connection request
+  // Reject connection request with authorization
   const handleRejectRequest = async (requestId) => {
     try {
-      await rejectConnectionRequest(requestId);
+      await rejectConnectionRequest(requestId, user?.uid);
     } catch (error) {
       console.error(
         "Failed to reject connection request:",

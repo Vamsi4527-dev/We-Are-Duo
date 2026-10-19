@@ -25,7 +25,7 @@ export default function Footer() {
           text-xs
           text-[#566867] dark:text-[#aab8b5]
           transition-colors duration-300">
-        Developed by Vamsi Krishna
+        Developed by Vamsi Krishna for my Seethu
       </p>
 
       <p
