@@ -25,7 +25,7 @@ export default function Footer() {
           text-xs
           text-[#566867] dark:text-[#aab8b5]
           transition-colors duration-300">
-        Developed by Vamsi Krishna for my Seethu
+        Developed by Vamsi Krishna for my Sita
       </p>
 
       <p
@@ -34,7 +34,7 @@ export default function Footer() {
           text-xs
           text-[#566867] dark:text-[#7f908b]
           transition-colors duration-300">
-        © 2026 We Are Duo
+        © 2026 All rights reserved
       </p>
       
     </footer>
