@@ -10,6 +10,46 @@ import ThemeToggle from "./ThemeToggle";
 const REPLY_THRESHOLD = 50;
 const MAX_DRAG = 80;
 
+function getMessageDateLabel(timestamp) {
+  if (!timestamp) {
+    return "";
+  }
+
+  const messageDate = timestamp.toDate();
+  const today = new Date();
+
+  const messageDay = new Date(
+    messageDate.getFullYear(),
+    messageDate.getMonth(),
+    messageDate.getDate()
+  );
+
+  const todayDay = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate()
+  );
+
+  const differenceInDays =
+    Math.floor(
+      (todayDay - messageDay) / (1000 * 60 * 60 * 24)
+    );
+
+  if (differenceInDays === 0) {
+    return "Today";
+  }
+
+  if (differenceInDays === 1) {
+    return "Yesterday";
+  }
+
+  return messageDate.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
 export default function Chat({ user, contact, onBack }) {
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
@@ -248,17 +288,47 @@ export default function Chat({ user, contact, onBack }) {
                 </p>
               </div>
             ) : (
-              messages.map((message) => {
+              messages.map((message, index) => {
                 const isMine =
                   message.senderId === user.uid;
 
+                const dateLabel = getMessageDateLabel(
+                  message.createdAt
+                );
+                const previousMessage = messages[index - 1];
+                const previousDateLabel = previousMessage
+                  ? getMessageDateLabel(previousMessage.createdAt)
+                  : null;
+
+                const shouldShowDate =
+                  dateLabel !== previousDateLabel;
+
                 return (
-                  <SwipeableMessage
-                    key={message.id}
-                    message={message}
-                    isMine={isMine}
-                    onReply={handleReply}
-                  />
+                  <div key={message.id}>
+                    {shouldShowDate && dateLabel && (
+                      <div className="flex justify-center my-4">
+                        <span
+                          className="
+                            px-3 py-1
+                            rounded-full
+                            text-xs
+                            font-medium
+                            bg-[#eaf0ef]
+                            dark:bg-[#26322f]
+                            text-[#566867]
+                            dark:text-[#aab8b5]
+                            transition-colors duration-300">
+                          {dateLabel}
+                        </span>
+                      </div>
+                    )}
+
+                    <SwipeableMessage
+                      message={message}
+                      isMine={isMine}
+                      onReply={handleReply}
+                    />
+                  </div>
                 );
               })
             )}
@@ -669,25 +739,34 @@ function SwipeableMessage({
             >
               Reply
             </p>
-
             <p
-              className={`
-                text-xs
-                truncate
-                ${
-                  isMine
-                    ? "text-teal-50"
-                    : "text-[#566867] dark:text-[#aab8b5]"
-                }`}>
+            className={`
+              text-xs
+              truncate
+            ${
+              isMine
+              ? "text-teal-50"
+              : "text-[#566867] dark:text-[#aab8b5]"}`}>
               {message.replyTo.text}
             </p>
-          </div>
-        )}
+          </div>)}
 
-        {/* Message text */}
-        <p className="text-sm break-words">
+          {/* Message text */}
+          <p className="text-sm break-words">
           {message.text}
-        </p>
+          {message.createdAt && (
+            <span
+              className={`block mt-1 text-[10px] text-right ${
+                isMine
+                  ? "text-teal-100"
+                  : "text-[#566867] dark:text-[#aab8b5]"}`}>
+              {message.createdAt.toDate().toLocaleTimeString("en-IN", {
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true,
+              })}
+            </span>
+          )}</p>
       </div>
     </div>
   );
