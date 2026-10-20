@@ -66,25 +66,50 @@ export default function Home({
   onOpenProfile,
 }) {
   const [profile, setProfile] = useState(null);
-  const [profileLoading, setProfileLoading] = useState(true);
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const [searchName, setSearchName] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [searchLoading, setSearchLoading] = useState(false);
-  const [searchError, setSearchError] = useState("");
-
-  const [requestLoading, setRequestLoading] = useState("");
-  const [requestMessage, setRequestMessage] = useState("");
-
-  const [incomingRequests, setIncomingRequests] = useState([]);
-  const [incomingRequestsLoading, setIncomingRequestsLoading] =
+  const [profileLoading, setProfileLoading] =
     useState(true);
 
-  const [contacts, setContacts] = useState([]);
-  const [contactsLoading, setContactsLoading] = useState(true);
+  const [menuOpen, setMenuOpen] =
+    useState(false);
 
-  const [rejectedRequests, setRejectedRequests] = useState([]);
+  const [searchName, setSearchName] =
+    useState("");
+
+  const [searchResults, setSearchResults] =
+    useState([]);
+
+  const [searchLoading, setSearchLoading] =
+    useState(false);
+
+  const [searchError, setSearchError] =
+    useState("");
+
+  const [requestLoading, setRequestLoading] =
+    useState("");
+
+  const [requestMessage, setRequestMessage] =
+    useState("");
+
+  const [incomingRequests, setIncomingRequests] =
+    useState([]);
+
+  const [
+    incomingRequestsLoading,
+    setIncomingRequestsLoading,
+  ] = useState(true);
+
+  const [contacts, setContacts] =
+    useState([]);
+
+  const [contactsLoading, setContactsLoading] =
+    useState(true);
+
+  const [rejectedRequests, setRejectedRequests] =
+    useState([]);
+
+  // Profile photo viewer
+  const [selectedPhoto, setSelectedPhoto] =
+    useState(null);
 
   // Load current user's profile
   useEffect(() => {
@@ -95,10 +120,15 @@ export default function Home({
       }
 
       try {
-        const userProfile = await getUserProfile(user.uid);
+        const userProfile =
+          await getUserProfile(user.uid);
+
         setProfile(userProfile);
       } catch (error) {
-        console.error("Failed to load profile:", error);
+        console.error(
+          "Failed to load profile:",
+          error
+        );
       } finally {
         setProfileLoading(false);
       }
@@ -116,35 +146,43 @@ export default function Home({
 
     setIncomingRequestsLoading(true);
 
-    const unsubscribe = listenToIncomingConnectionRequests(
-      user.uid,
-      async (requests) => {
-        try {
-          const requestsWithProfiles = await Promise.all(
-            requests.map(async (request) => {
-              const senderProfile =
-                await getPublicUserProfile(
-                  request.senderId
-                );
+    const unsubscribe =
+      listenToIncomingConnectionRequests(
+        user.uid,
+        async (requests) => {
+          try {
+            const requestsWithProfiles =
+              await Promise.all(
+                requests.map(
+                  async (request) => {
+                    const senderProfile =
+                      await getPublicUserProfile(
+                        request.senderId
+                      );
 
-              return {
-                ...request,
-                senderProfile,
-              };
-            })
-          );
+                    return {
+                      ...request,
+                      senderProfile,
+                    };
+                  }
+                )
+              );
 
-          setIncomingRequests(requestsWithProfiles);
-        } catch (error) {
-          console.error(
-            "Failed to load incoming connection requests:",
-            error
-          );
-        } finally {
-          setIncomingRequestsLoading(false);
+            setIncomingRequests(
+              requestsWithProfiles
+            );
+          } catch (error) {
+            console.error(
+              "Failed to load incoming connection requests:",
+              error
+            );
+          } finally {
+            setIncomingRequestsLoading(
+              false
+            );
+          }
         }
-      }
-    );
+      );
 
     return unsubscribe;
   }, [user]);
@@ -158,13 +196,14 @@ export default function Home({
 
     setContactsLoading(true);
 
-    const unsubscribe = listenToAcceptedConnections(
-      user.uid,
-      (acceptedContacts) => {
-        setContacts(acceptedContacts);
-        setContactsLoading(false);
-      }
-    );
+    const unsubscribe =
+      listenToAcceptedConnections(
+        user.uid,
+        (acceptedContacts) => {
+          setContacts(acceptedContacts);
+          setContactsLoading(false);
+        }
+      );
 
     return unsubscribe;
   }, [user]);
@@ -175,12 +214,13 @@ export default function Home({
       return;
     }
 
-    const unsubscribe = listenToRejectedConnections(
-      user.uid,
-      (rejected) => {
-        setRejectedRequests(rejected);
-      }
-    );
+    const unsubscribe =
+      listenToRejectedConnections(
+        user.uid,
+        (rejected) => {
+          setRejectedRequests(rejected);
+        }
+      );
 
     return unsubscribe;
   }, [user]);
@@ -202,11 +242,14 @@ export default function Home({
     try {
       setSearchLoading(true);
 
-      const results = await searchUsersByName(name);
+      const results =
+        await searchUsersByName(name);
 
-      const filteredResults = results.filter(
-        (result) => result.uid !== user?.uid
-      );
+      const filteredResults =
+        results.filter(
+          (result) =>
+            result.uid !== user?.uid
+        );
 
       if (filteredResults.length === 0) {
         setSearchError(
@@ -217,7 +260,11 @@ export default function Home({
 
       setSearchResults(filteredResults);
     } catch (error) {
-      console.error("User search failed:", error);
+      console.error(
+        "User search failed:",
+        error
+      );
+
       setSearchError(
         "Unable to search for user. Please try again."
       );
@@ -227,22 +274,27 @@ export default function Home({
   };
 
   // Send connection request
-  const handleAddContact = async (receiverId) => {
+  const handleAddContact = async (
+    receiverId
+  ) => {
     setRequestMessage("");
 
     try {
       setRequestLoading(receiverId);
 
-      const result = await sendConnectionRequest(
-        user.uid,
-        receiverId
-      );
+      const result =
+        await sendConnectionRequest(
+          user.uid,
+          receiverId
+        );
 
       if (result.success) {
         setRequestMessage(
           "Connection request sent."
         );
-      } else if (result.reason === "already-pending") {
+      } else if (
+        result.reason === "already-pending"
+      ) {
         setRequestMessage(
           "Connection request already pending."
         );
@@ -252,7 +304,9 @@ export default function Home({
         setRequestMessage(
           "You are already connected with this user."
         );
-      } else if (result.reason === "self-request") {
+      } else if (
+        result.reason === "self-request"
+      ) {
         setRequestMessage(
           "You cannot send a connection request to yourself."
         );
@@ -262,6 +316,7 @@ export default function Home({
         "Connection request failed:",
         error
       );
+
       setRequestMessage(
         "Unable to send connection request."
       );
@@ -270,8 +325,10 @@ export default function Home({
     }
   };
 
-  // Accept connection request with authorization
-  const handleAcceptRequest = async (requestId) => {
+  // Accept connection request
+  const handleAcceptRequest = async (
+    requestId
+  ) => {
     try {
       await acceptConnectionRequest(
         requestId,
@@ -285,8 +342,10 @@ export default function Home({
     }
   };
 
-  // Reject connection request with authorization
-  const handleRejectRequest = async (requestId) => {
+  // Reject connection request
+  const handleRejectRequest = async (
+    requestId
+  ) => {
     try {
       await rejectConnectionRequest(
         requestId,
@@ -315,6 +374,52 @@ export default function Home({
       );
     }
   };
+
+  // Open profile photo
+  const handleOpenPhoto = (
+    photoURL,
+    fullName
+  ) => {
+    if (!photoURL) {
+      return;
+    }
+
+    setSelectedPhoto({
+      photoURL,
+      fullName:
+        fullName || "Profile Photo",
+    });
+  };
+
+  // Close profile photo
+  const handleClosePhoto = () => {
+    setSelectedPhoto(null);
+  };
+
+  // Close photo viewer with Escape
+  useEffect(() => {
+    if (!selectedPhoto) {
+      return;
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        handleClosePhoto();
+      }
+    };
+
+    window.addEventListener(
+      "keydown",
+      handleKeyDown
+    );
+
+    return () => {
+      window.removeEventListener(
+        "keydown",
+        handleKeyDown
+      );
+    };
+  }, [selectedPhoto]);
 
   return (
     <main
@@ -500,12 +605,43 @@ export default function Home({
                   >
                     {/* Sender */}
                     <div className="flex items-center gap-3 min-w-0">
-                      <ProfileAvatar
-                        profile={
-                          request.senderProfile
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleOpenPhoto(
+                            request.senderProfile
+                              ?.photoURL,
+                            request.senderProfile
+                              ?.fullName
+                          )
                         }
-                        size="w-12 h-12"
-                      />
+                        disabled={
+                          !request.senderProfile
+                            ?.photoURL
+                        }
+                        aria-label={`View ${
+                          request.senderProfile
+                            ?.fullName ||
+                          "user"
+                        } profile photo`}
+                        className={`
+                          rounded-full
+                          flex-shrink-0
+                          ${
+                            request.senderProfile
+                              ?.photoURL
+                              ? "cursor-pointer hover:opacity-90 transition-opacity"
+                              : "cursor-default"
+                          }
+                        `}
+                      >
+                        <ProfileAvatar
+                          profile={
+                            request.senderProfile
+                          }
+                          size="w-12 h-12"
+                        />
+                      </button>
 
                       <div className="min-w-0">
                         <p className="font-semibold text-[#10201f] dark:text-[#FFFFFF] truncate">
@@ -611,12 +747,43 @@ export default function Home({
                 >
                   {/* Contact */}
                   <div className="flex items-center gap-3 min-w-0">
-                    <ProfileAvatar
-                      profile={
-                        contact.contactProfile
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleOpenPhoto(
+                          contact.contactProfile
+                            ?.photoURL,
+                          contact.contactProfile
+                            ?.fullName
+                        )
                       }
-                      size="w-12 h-12"
-                    />
+                      disabled={
+                        !contact.contactProfile
+                          ?.photoURL
+                      }
+                      aria-label={`View ${
+                        contact.contactProfile
+                          ?.fullName ||
+                        "contact"
+                      } profile photo`}
+                      className={`
+                        rounded-full
+                        flex-shrink-0
+                        ${
+                          contact.contactProfile
+                            ?.photoURL
+                            ? "cursor-pointer hover:opacity-90 transition-opacity"
+                            : "cursor-default"
+                        }
+                      `}
+                    >
+                      <ProfileAvatar
+                        profile={
+                          contact.contactProfile
+                        }
+                        size="w-12 h-12"
+                      />
+                    </button>
 
                     <div className="min-w-0">
                       <p className="font-semibold text-[#10201f] dark:text-[#FFFFFF] truncate">
@@ -757,10 +924,34 @@ export default function Home({
             >
               {/* Search Result */}
               <div className="flex items-center gap-3 min-w-0">
-                <ProfileAvatar
-                  profile={result}
-                  size="w-11 h-11"
-                />
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleOpenPhoto(
+                      result.photoURL,
+                      result.fullName
+                    )
+                  }
+                  disabled={!result.photoURL}
+                  aria-label={`View ${
+                    result.fullName ||
+                    "user"
+                  } profile photo`}
+                  className={`
+                    rounded-full
+                    flex-shrink-0
+                    ${
+                      result.photoURL
+                        ? "cursor-pointer hover:opacity-90 transition-opacity"
+                        : "cursor-default"
+                    }
+                  `}
+                >
+                  <ProfileAvatar
+                    profile={result}
+                    size="w-11 h-11"
+                  />
+                </button>
 
                 <div className="min-w-0">
                   <p className="font-semibold text-[#10201f] dark:text-[#FFFFFF] truncate">
@@ -834,16 +1025,53 @@ export default function Home({
                     "
                   >
                     <div className="flex items-center gap-3">
-                      <ProfileAvatar
-                        profile={
-                          request.otherUserProfile
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleOpenPhoto(
+                            request
+                              .otherUserProfile
+                              ?.photoURL,
+                            request
+                              .otherUserProfile
+                              ?.fullName
+                          )
                         }
-                        size="w-11 h-11"
-                      />
+                        disabled={
+                          !request
+                            .otherUserProfile
+                            ?.photoURL
+                        }
+                        aria-label={`View ${
+                          request
+                            .otherUserProfile
+                            ?.fullName ||
+                          "user"
+                        } profile photo`}
+                        className={`
+                          rounded-full
+                          flex-shrink-0
+                          ${
+                            request
+                              .otherUserProfile
+                              ?.photoURL
+                              ? "cursor-pointer hover:opacity-90 transition-opacity"
+                              : "cursor-default"
+                          }
+                        `}
+                      >
+                        <ProfileAvatar
+                          profile={
+                            request.otherUserProfile
+                          }
+                          size="w-11 h-11"
+                        />
+                      </button>
 
                       <div className="min-w-0">
                         <p className="font-semibold text-[#10201f] dark:text-[#FFFFFF]">
-                          {request.otherUserProfile
+                          {request
+                            .otherUserProfile
                             ?.fullName ||
                             "Unknown user"}
                         </p>
@@ -860,6 +1088,80 @@ export default function Home({
           </div>
         )}
       </section>
+
+      {/* Profile Photo Viewer */}
+      {selectedPhoto && (
+        <div
+          className="
+            fixed inset-0
+            z-[100]
+            bg-black/80
+            flex items-center justify-center
+            p-4
+          "
+          onClick={handleClosePhoto}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Profile photo viewer"
+        >
+          <div
+            className="
+              relative
+              w-full max-w-lg
+              flex flex-col items-center
+            "
+            onClick={(event) =>
+              event.stopPropagation()
+            }
+          >
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={handleClosePhoto}
+              aria-label="Close profile photo"
+              className="
+                absolute
+                right-0
+                -top-12
+                w-10 h-10
+                rounded-full
+                bg-white/10
+                hover:bg-white/20
+                text-white
+                text-2xl
+                flex items-center justify-center
+                transition-colors duration-200
+                cursor-pointer
+              "
+            >
+              ×
+            </button>
+
+            {/* Large Profile Photo */}
+            <img
+              src={selectedPhoto.photoURL}
+              alt={`${selectedPhoto.fullName} profile`}
+              className="
+                max-w-full
+                max-h-[75vh]
+                rounded-2xl
+                object-contain
+                border border-white/20
+                shadow-2xl"/>
+
+            {/* Name */}
+            <p
+              className="
+                mt-4
+                text-lg
+                font-semibold
+                text-white
+                text-center">
+              {selectedPhoto.fullName}
+            </p>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
