@@ -19,44 +19,41 @@
 
 /* ---------------------------------------------------------
    1. DESIGN TOKENS
-   Colours use light-dark(<light value>, <dark value>).
-   The browser picks the correct half based on `color-scheme`,
-   which is what the theme switch in section 2 changes.
-   That way each colour is written ONCE instead of twice.
+   Palette tokens for the dark rose theme used across the
+   standalone HTML screens.
    --------------------------------------------------------- */
 :root {
   color-scheme: light;
 
   /* Surfaces and text */
-  --color-bg:            light-dark(#f3f6f6, #0e1312);
-  --color-surface:       light-dark(#ffffff, #161d1c);
-  --color-surface-2:     light-dark(#eaf0ef, #1f2928);
-  --color-text:          light-dark(#10201f, #e7eeed);
-  --color-muted:         light-dark(#566867, #98aaa8);
-  --color-border:        light-dark(#d9e2e1, #2a3635);
-  --color-border-strong: light-dark(#b3c2c0, #44524f);
+  --color-bg:            #FFFFFF;
+  --color-surface:       #FFFFFF;
+  --color-surface-2:     #eaf0ef;
+  --color-text:          #10201f;
+  --color-muted:         #566867;
+  --color-border:        #d9e2e1;
+  --color-border-strong: #b3c2c0;
 
-  /* Accent: a restrained teal */
-  --color-primary:       light-dark(#0f766e, #3fd2c1);
-  --color-primary-hover: light-dark(#0b5f58, #6be3d5);
-  --color-on-primary:    light-dark(#ffffff, #05211e);
-  --color-primary-soft:  light-dark(#e2f3f1, #14302d);
-  --color-focus:         light-dark(#0f766e, #6be3d5);
+  --color-primary:       #0f766e;
+  --color-primary-hover: #0b5f58;
+  --color-on-primary:    #FFFFFF;
+  --color-primary-soft:  #eaf0ef;
+  --color-focus:         #0f766e;
 
-  /* Meaning colours (always paired with an icon or text, never colour alone) */
-  --color-danger:        light-dark(#b42318, #ff8a80);
-  --color-danger-soft:   light-dark(#fdecea, #33191a);
-  --color-success:       light-dark(#0a6b45, #5bd39a);
-  --color-success-soft:  light-dark(#e3f5ec, #12301f);
-  --color-warning:       light-dark(#9a5b00, #f5b94a);
-  --color-warning-soft:  light-dark(#fdf1dc, #33290f);
+  /* Meaning colours */
+  --color-danger:        #b42318;
+  --color-danger-soft:   #fdecea;
+  --color-success:       #0a6b45;
+  --color-success-soft:  #e3f5ec;
+  --color-warning:       #9a5b00;
+  --color-warning-soft:  #fdf1dc;
 
   /* Shadow */
-  --shadow-color: light-dark(rgb(16 32 31 / 0.10), rgb(0 0 0 / 0.50));
+  --shadow-color: rgb(0 0 0 / 0.10);
   --shadow-card:  0 1px 2px var(--shadow-color),
                   0 12px 28px -16px var(--shadow-color);
 
-  /* Typography (system fonts only, so no external files are needed) */
+  /* Typography */
   --font-sans: "Avenir Next", "Segoe UI", system-ui, -apple-system,
                "Helvetica Neue", Arial, sans-serif;
   --text-xs:   0.75rem;
@@ -82,19 +79,47 @@
   --radius-message: 18px;
   --radius-pill:    999px;
 
-  /* Touch target: at least 44px, comfortable on phones */
+  /* Touch target */
   --tap: 2.75rem;
 
   /* Motion */
   --transition: 160ms ease;
 }
 
+:root.dark,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Surfaces and text */
+  --color-bg:            #0d1211;
+  --color-surface:       #151c1b;
+  --color-surface-2:     #26322f;
+  --color-text:          #FFFFFF;
+  --color-muted:         #aab8b5;
+  --color-border:        #303c39;
+  --color-border-strong: #46534f;
+
+  --color-primary:       #0f766e;
+  --color-primary-hover: #14b8a6;
+  --color-on-primary:    #FFFFFF;
+  --color-primary-soft:  #26322f;
+  --color-focus:         #2dd4bf;
+
+  --color-danger:        #2dd4bf;
+  --color-danger-soft:   #26322f;
+  --color-success:       #2dd4bf;
+  --color-success-soft:  #26322f;
+  --color-warning:       #2dd4bf;
+  --color-warning-soft:  #26322f;
+
+  --shadow-color: rgb(0 0 0 / 0.50);
+}
+
 
 /* ---------------------------------------------------------
    2. THEME SWITCHES
-   Add data-theme="dark" (or "light") to the <html> tag of any page
-   to preview that theme. Without it the page is light.
-   settings.css adds a checkbox-driven switch using the same idea.
+   Add data-theme="dark" (or "light") to the <html> tag of a page
+   to choose native control color-scheme behavior.
    --------------------------------------------------------- */
 :root[data-theme="light"] { color-scheme: light; }
 :root[data-theme="dark"]  { color-scheme: dark; }

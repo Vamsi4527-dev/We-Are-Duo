@@ -47,7 +47,7 @@ export default function ForgotPassword({ onNavigate }) {
         aria-labelledby="forgot-title"
       >
         <header className="flex flex-col gap-1">
-          <h1 id="forgot-title" className="text-2xl font-bold tracking-tight text-[#10201f] dark:text-white">
+          <h1 id="forgot-title" className="text-2xl font-bold tracking-tight text-[#10201f] dark:text-[#FFFFFF]">
             Reset your password
           </h1>
           <p className="text-sm text-[#566867] dark:text-[#aab8b5]">
@@ -58,7 +58,7 @@ export default function ForgotPassword({ onNavigate }) {
         <form onSubmit={handleSubmit} className="flex flex-col gap-5" method="post">
           {statusMessage && (
             <div
-              className="bg-[#e3f5ec] dark:bg-[#133025] border border-[#a3e4c4] dark:border-[#255f46] text-[#0a6b45] dark:text-[#5be2a3] rounded-xl p-3.5 text-sm"
+              className="bg-[#e3f5ec] dark:bg-[#26322f] border border-[#a3e4c4] dark:border-[#303c39] text-[#0a6b45] dark:text-[#2dd4bf] rounded-xl p-3.5 text-sm"
               role="status"
             >
               {statusMessage}
@@ -67,7 +67,7 @@ export default function ForgotPassword({ onNavigate }) {
 
           {errorMessage && (
             <div
-              className="bg-[#fdecea] dark:bg-[#2d1b1b] border border-[#f5c2c7] dark:border-[#5c2b2b] text-[#b42318] dark:text-[#ff8f85] rounded-xl p-3.5 text-sm"
+              className="bg-[#fdecea] dark:bg-[#26322f] border border-[#f5c2c7] dark:border-[#303c39] text-[#b42318] dark:text-[#2dd4bf] rounded-xl p-3.5 text-sm"
               role="alert"
             >
               {errorMessage}
@@ -75,7 +75,7 @@ export default function ForgotPassword({ onNavigate }) {
           )}
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-semibold text-[#10201f] dark:text-white" htmlFor="forgot-email">
+            <label className="text-sm font-semibold text-[#10201f] dark:text-[#FFFFFF]" htmlFor="forgot-email">
               Email address
             </label>
             <input
@@ -87,14 +87,14 @@ export default function ForgotPassword({ onNavigate }) {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="alex@example.com"
               required
-              className="w-full h-11 px-4 border border-[#b3c2c0] dark:border-[#46534f] rounded-[10px] bg-white dark:bg-[#101615] text-[#10201f] dark:text-white placeholder:text-[#566867]/60 dark:placeholder:text-[#7f908b] focus:outline-none focus:ring-2 focus:ring-teal-700 focus:border-transparent transition"
+              className="w-full h-11 px-4 border border-[#b3c2c0] dark:border-[#46534f] rounded-[10px] bg-white dark:bg-[#101615] text-[#10201f] dark:text-[#FFFFFF] placeholder:text-[#566867]/60 dark:placeholder:text-[#aab8b5] focus:outline-none focus:ring-2 focus:ring-[#0f766e] focus:border-transparent transition"
             />
           </div>
 
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full h-11 px-5 rounded-[10px] bg-teal-700 hover:bg-[#0b5f58] text-white font-semibold transition cursor-pointer disabled:opacity-60 disabled:cursor-wait"
+            className="w-full h-11 px-5 rounded-[10px] bg-[#0f766e] hover:bg-[#0b5f58] text-[#FFFFFF] font-semibold transition cursor-pointer disabled:opacity-60 disabled:cursor-wait"
           >
             {isLoading ? "Sending link..." : "Send reset link"}
           </button>
@@ -104,7 +104,7 @@ export default function ForgotPassword({ onNavigate }) {
           <button
             type="button"
             onClick={() => onNavigate("login")}
-            className="font-semibold text-teal-700 dark:text-teal-400 hover:underline cursor-pointer"
+            className="font-semibold text-[#0f766e] dark:text-[#2dd4bf] hover:underline cursor-pointer"
           >
             Back to sign in
           </button>

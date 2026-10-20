@@ -14,7 +14,7 @@ export default function Footer() {
         className="
           text-sm
           font-semibold
-          text-[#10201f] dark:text-white
+          text-[#10201f] dark:text-[#FFFFFF]
           transition-colors duration-300">
         We Are Duo
       </p>
@@ -32,7 +32,7 @@ export default function Footer() {
         className="
           mt-3
           text-xs
-          text-[#566867] dark:text-[#7f908b]
+          text-[#566867] dark:text-[#aab8b5]
           transition-colors duration-300">
         © 2026 All rights reserved
       </p>

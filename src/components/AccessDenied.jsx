@@ -13,10 +13,10 @@ export default function AccessDenied({ onNavigate }) {
       onNavigate={onNavigate}
     >
       <section
-        className="w-full max-w-[26rem] sm:max-w-[30rem] bg-white border border-[#d9e2e1] rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col gap-5"
+        className="w-full max-w-[26rem] sm:max-w-[30rem] bg-white dark:bg-[#151c1b] border border-[#d9e2e1] dark:border-[#303c39] rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col gap-5"
         aria-labelledby="denied-title"
       >
-        <div className="w-14 h-14 rounded-full bg-[#fdf1dc] text-[#9a5b00] flex items-center justify-center">
+        <div className="w-14 h-14 rounded-full bg-[#fdf1dc] dark:bg-[#26322f] text-[#9a5b00] dark:text-[#2dd4bf] flex items-center justify-center">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <rect x="4" y="11" width="16" height="10" rx="2" />
             <path d="M8 11V7a4 4 0 0 1 8 0v4" />
@@ -24,17 +24,17 @@ export default function AccessDenied({ onNavigate }) {
         </div>
 
         <header className="flex flex-col gap-1">
-          <h1 id="denied-title" className="text-2xl font-bold tracking-tight text-[#10201f]">
+          <h1 id="denied-title" className="text-2xl font-bold tracking-tight text-[#10201f] dark:text-[#FFFFFF]">
             This chat is private
           </h1>
-          <p className="text-sm text-[#566867] leading-relaxed">
+          <p className="text-sm text-[#566867] dark:text-[#aab8b5] leading-relaxed">
             jamie@example.com isn't one of the two approved users, so you can't open this conversation.
           </p>
         </header>
 
-        <div className="bg-[#fdf1dc] border border-[#f5b94a]/40 text-[#9a5b00] rounded-xl p-3.5 text-sm" role="alert">
+        <div className="bg-[#fdf1dc] dark:bg-[#26322f] border border-[#f5b94a]/40 dark:border-[#303c39] text-[#9a5b00] dark:text-[#2dd4bf] rounded-xl p-3.5 text-sm" role="alert">
           <span className="block font-semibold mb-0.5">Think this is a mistake?</span>
-          <span className="text-[#9a5b00]/90">
+          <span className="text-[#9a5b00]/90 dark:text-[#2dd4bf]">
             Ask one of the approved users to check that your email address matches the one on the approved list.
           </span>
         </div>
@@ -43,21 +43,21 @@ export default function AccessDenied({ onNavigate }) {
           <button
             type="button"
             onClick={() => onNavigate("login")}
-            className="w-full h-11 px-5 rounded-[10px] bg-teal-700 hover:bg-[#0b5f58] text-white font-semibold transition cursor-pointer"
+            className="w-full h-11 px-5 rounded-[10px] bg-[#0f766e] hover:bg-[#0b5f58] text-[#FFFFFF] font-semibold transition cursor-pointer"
           >
             Sign out
           </button>
           <button
             type="button"
             onClick={() => onNavigate("splash")}
-            className="w-full h-11 px-5 rounded-[10px] bg-white border border-[#b3c2c0] text-[#10201f] font-semibold hover:bg-[#eaf0ef] transition cursor-pointer"
+            className="w-full h-11 px-5 rounded-[10px] bg-white dark:bg-[#151c1b] border border-[#b3c2c0] dark:border-[#303c39] text-[#10201f] dark:text-[#FFFFFF] font-semibold hover:bg-[#eaf0ef] dark:hover:bg-[#26322f] transition cursor-pointer"
           >
             Back to start
           </button>
         </div>
 
-        <p className="text-xs text-[#566867] leading-relaxed">
-          <span className="inline-block bg-[#eaf0ef] text-[#566867] text-[11px] font-semibold uppercase px-1.5 py-0.5 rounded mr-1">
+        <p className="text-xs text-[#566867] dark:text-[#aab8b5] leading-relaxed">
+          <span className="inline-block bg-[#eaf0ef] dark:bg-[#26322f] text-[#566867] dark:text-[#aab8b5] text-[11px] font-semibold uppercase px-1.5 py-0.5 rounded mr-1">
             Demo
           </span>
           Deciding who is approved needs a backend. Later, Firebase security rules will do this check, not the page itself.

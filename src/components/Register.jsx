@@ -81,7 +81,7 @@ export default function Register({ onNavigate }) {
         <header className="flex flex-col gap-1">
           <h1
             id="register-title"
-            className="text-2xl font-bold tracking-tight text-[#10201f] dark:text-white"
+            className="text-2xl font-bold tracking-tight text-[#10201f] dark:text-[#FFFFFF]"
           >
             Create your account
           </h1>
@@ -91,7 +91,7 @@ export default function Register({ onNavigate }) {
           </p>
         </header>
 
-        <div className="bg-[#eaf0ef] dark:bg-[#1a2422] border border-[#d9e2e1] dark:border-[#34423f] text-[#10201f] dark:text-white rounded-xl p-3.5 text-sm">
+        <div className="bg-[#eaf0ef] dark:bg-[#151c1b] border border-[#d9e2e1] dark:border-[#303c39] text-[#10201f] dark:text-[#FFFFFF] rounded-xl p-3.5 text-sm">
           <span className="block font-semibold mb-0.5">
             Creating an account doesn't open the chat
           </span>
@@ -109,7 +109,7 @@ export default function Register({ onNavigate }) {
         >
           {error && (
             <div
-              className="bg-[#fdecea] dark:bg-[#2d1b1b] border border-[#f5c2c7] dark:border-[#5c2b2b] text-[#b42318] dark:text-[#ff8f85] rounded-xl p-3.5 text-sm"
+              className="bg-[#fdecea] dark:bg-[#26322f] border border-[#f5c2c7] dark:border-[#303c39] text-[#b42318] dark:text-[#2dd4bf] rounded-xl p-3.5 text-sm"
               role="alert"
             >
               {error}
@@ -118,7 +118,7 @@ export default function Register({ onNavigate }) {
 
           <div className="flex flex-col gap-1.5">
             <label
-              className="text-sm font-semibold text-[#10201f] dark:text-white"
+              className="text-sm font-semibold text-[#10201f] dark:text-[#FFFFFF]"
               htmlFor="register-name"
             >
               Full name
@@ -133,13 +133,13 @@ export default function Register({ onNavigate }) {
               onChange={(e) => setName(e.target.value)}
               placeholder="Alex Morgan"
               required
-              className="w-full h-11 px-4 border border-[#b3c2c0] dark:border-[#46534f] rounded-[10px] bg-white dark:bg-[#101615] text-[#10201f] dark:text-white placeholder:text-[#566867]/60 dark:placeholder:text-[#7f908b] focus:outline-none focus:ring-2 focus:ring-teal-700 focus:border-transparent transition"
+              className="w-full h-11 px-4 border border-[#b3c2c0] dark:border-[#46534f] rounded-[10px] bg-white dark:bg-[#101615] text-[#10201f] dark:text-[#FFFFFF] placeholder:text-[#566867]/60 dark:placeholder:text-[#aab8b5] focus:outline-none focus:ring-2 focus:ring-[#0f766e] focus:border-transparent transition"
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
             <label
-              className="text-sm font-semibold text-[#10201f] dark:text-white"
+              className="text-sm font-semibold text-[#10201f] dark:text-[#FFFFFF]"
               htmlFor="register-email"
             >
               Email address
@@ -154,13 +154,13 @@ export default function Register({ onNavigate }) {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="alex@example.com"
               required
-              className="w-full h-11 px-4 border border-[#b3c2c0] dark:border-[#46534f] rounded-[10px] bg-white dark:bg-[#101615] text-[#10201f] dark:text-white placeholder:text-[#566867]/60 dark:placeholder:text-[#7f908b] focus:outline-none focus:ring-2 focus:ring-teal-700 focus:border-transparent transition"
+              className="w-full h-11 px-4 border border-[#b3c2c0] dark:border-[#46534f] rounded-[10px] bg-white dark:bg-[#101615] text-[#10201f] dark:text-[#FFFFFF] placeholder:text-[#566867]/60 dark:placeholder:text-[#aab8b5] focus:outline-none focus:ring-2 focus:ring-[#0f766e] focus:border-transparent transition"
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
             <label
-              className="text-sm font-semibold text-[#10201f] dark:text-white"
+              className="text-sm font-semibold text-[#10201f] dark:text-[#FFFFFF]"
               htmlFor="register-password"
             >
               Password
@@ -177,14 +177,14 @@ export default function Register({ onNavigate }) {
                 required
                 minLength={8}
                 aria-describedby="register-password-rules"
-                className="w-full h-11 pl-4 pr-11 border border-[#b3c2c0] dark:border-[#46534f] rounded-[10px] bg-white dark:bg-[#101615] text-[#10201f] dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-700 focus:border-transparent transition"
+                className="w-full h-11 pl-4 pr-11 border border-[#b3c2c0] dark:border-[#46534f] rounded-[10px] bg-white dark:bg-[#101615] text-[#10201f] dark:text-[#FFFFFF] focus:outline-none focus:ring-2 focus:ring-[#0f766e] focus:border-transparent transition"
               />
 
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 aria-label={showPassword ? "Hide password" : "Show password"}
-                className="absolute right-0 h-11 w-11 flex items-center justify-center text-[#566867] dark:text-[#aab8b5] hover:text-[#10201f] dark:hover:text-white transition cursor-pointer"
+                className="absolute right-0 h-11 w-11 flex items-center justify-center text-[#566867] dark:text-[#aab8b5] hover:text-[#10201f] dark:hover:text-[#FFFFFF] transition cursor-pointer"
               >
                 {showPassword ? (
                   <svg
@@ -227,7 +227,7 @@ export default function Register({ onNavigate }) {
             >
               <li
                 className={`flex items-center gap-2 ${
-                  hasEightChars ? "text-[#10201f] dark:text-white" : ""
+                  hasEightChars ? "text-[#10201f] dark:text-[#FFFFFF]" : ""
                 }`}
               >
                 <span className="sr-only">
@@ -238,7 +238,7 @@ export default function Register({ onNavigate }) {
                   className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold border transition ${
                     hasEightChars
                       ? "bg-[#0a6b45] border-[#0a6b45] text-[#e3f5ec]"
-                      : "border-[#b3c2c0] dark:border-[#46534f]"
+                      : "border-[#b3c2c0] dark:border-[#303c39]"
                   }`}
                   aria-hidden="true"
                 >
@@ -250,7 +250,7 @@ export default function Register({ onNavigate }) {
 
               <li
                 className={`flex items-center gap-2 ${
-                  hasUpperCase ? "text-[#10201f] dark:text-white" : ""
+                  hasUpperCase ? "text-[#10201f] dark:text-[#FFFFFF]" : ""
                 }`}
               >
                 <span className="sr-only">
@@ -261,7 +261,7 @@ export default function Register({ onNavigate }) {
                   className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold border transition ${
                     hasUpperCase
                       ? "bg-[#0a6b45] border-[#0a6b45] text-[#e3f5ec]"
-                      : "border-[#b3c2c0] dark:border-[#46534f]"
+                      : "border-[#b3c2c0] dark:border-[#303c39]"
                   }`}
                   aria-hidden="true"
                 >
@@ -273,7 +273,7 @@ export default function Register({ onNavigate }) {
 
               <li
                 className={`flex items-center gap-2 ${
-                  hasNumber ? "text-[#10201f] dark:text-white" : ""
+                  hasNumber ? "text-[#10201f] dark:text-[#FFFFFF]" : ""
                 }`}
               >
                 <span className="sr-only">
@@ -284,7 +284,7 @@ export default function Register({ onNavigate }) {
                   className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold border transition ${
                     hasNumber
                       ? "bg-[#0a6b45] border-[#0a6b45] text-[#e3f5ec]"
-                      : "border-[#b3c2c0] dark:border-[#46534f]"
+                      : "border-[#b3c2c0] dark:border-[#303c39]"
                   }`}
                   aria-hidden="true"
                 >
@@ -298,7 +298,7 @@ export default function Register({ onNavigate }) {
 
           <div className="flex flex-col gap-1.5">
             <label
-              className="text-sm font-semibold text-[#10201f] dark:text-white"
+              className="text-sm font-semibold text-[#10201f] dark:text-[#FFFFFF]"
               htmlFor="register-confirm"
             >
               Confirm password
@@ -313,18 +313,18 @@ export default function Register({ onNavigate }) {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
               minLength={8}
-              className="w-full h-11 px-4 border border-[#b3c2c0] dark:border-[#46534f] rounded-[10px] bg-white dark:bg-[#101615] text-[#10201f] dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-700 focus:border-transparent transition"
+              className="w-full h-11 px-4 border border-[#b3c2c0] dark:border-[#46534f] rounded-[10px] bg-white dark:bg-[#101615] text-[#10201f] dark:text-[#FFFFFF] focus:outline-none focus:ring-2 focus:ring-[#0f766e] focus:border-transparent transition"
             />
           </div>
 
-          <label className="flex items-start gap-2.5 cursor-pointer text-sm text-[#10201f] dark:text-white">
+          <label className="flex items-start gap-2.5 cursor-pointer text-sm text-[#10201f] dark:text-[#FFFFFF]">
             <input
               type="checkbox"
               name="terms"
               checked={terms}
               onChange={(e) => setTerms(e.target.checked)}
               required
-              className="w-4 h-4 mt-0.5 rounded border-[#b3c2c0] dark:border-[#46534f] text-teal-700 focus:ring-teal-700 cursor-pointer"
+              className="w-4 h-4 mt-0.5 rounded border-[#b3c2c0] dark:border-[#303c39] text-[#0f766e] focus:ring-[#0f766e] cursor-pointer"
             />
 
             <span className="leading-snug">
@@ -337,7 +337,7 @@ export default function Register({ onNavigate }) {
             type="submit"
             disabled={isLoading}
             aria-busy={isLoading}
-            className="w-full h-11 px-5 rounded-[10px] bg-teal-700 hover:bg-[#0b5f58] text-white font-semibold transition cursor-pointer disabled:opacity-70 disabled:cursor-wait"
+            className="w-full h-11 px-5 rounded-[10px] bg-[#0f766e] hover:bg-[#0b5f58] text-[#FFFFFF] font-semibold transition cursor-pointer disabled:opacity-70 disabled:cursor-wait"
           >
             {isLoading ? "Creating account..." : "Create account"}
           </button>
@@ -348,7 +348,7 @@ export default function Register({ onNavigate }) {
           <button
             type="button"
             onClick={() => onNavigate("login")}
-            className="font-semibold text-teal-700 dark:text-teal-400 hover:underline cursor-pointer"
+            className="font-semibold text-[#0f766e] dark:text-[#2dd4bf] hover:underline cursor-pointer"
           >
             Sign in
           </button>

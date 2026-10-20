@@ -330,6 +330,8 @@ export function listenToRejectedConnections(userId, callback) {
     callback(rejected);
   };
 
+  
+
   const unsubscribeSent = onSnapshot(sentQuery, (snapshot) => {
     sentRequests = snapshot.docs.map((document) => ({
       id: document.id,
@@ -352,4 +354,27 @@ export function listenToRejectedConnections(userId, callback) {
     unsubscribeSent();
     unsubscribeReceived();
   };
+}
+
+// Update the current user's profile picture
+export async function updateUserPhoto(uid, photoURL) {
+  if (!uid) {
+    throw new Error("User ID is required.");
+  }
+
+  await setDoc(
+    doc(db,"users",uid),
+    {
+      photoURL: photoURL || "",
+    },
+    { merge: true }
+  );
+
+  await setDoc(
+    doc(db,"publicProfiles",uid),
+    {
+      photoURL: photoURL || "",
+    },
+    { merge: true }
+  );
 }

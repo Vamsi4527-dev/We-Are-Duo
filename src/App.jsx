@@ -10,6 +10,7 @@ import ForgotPassword from "./components/ForgotPassword";
 import AccessDenied from "./components/AccessDenied";
 import Home from "./components/Home";
 import Chat from "./components/Chat";
+import MyProfile from "./components/MyProfile";
 import Logo from "./components/Logo";
 import ThemeToggle from "./components/ThemeToggle";
 import Footer from "./components/Footer";
@@ -70,7 +71,7 @@ export default function App() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen grid place-items-center bg-[#f3f6f6] dark:bg-[#0d1211]">
+      <div className="min-h-screen grid place-items-center bg-[#FFFFFF] dark:bg-[#0d1211]">
         <p className="text-[#566867] dark:text-[#aab8b5] font-medium">
           Loading Duo...
         </p>
@@ -84,7 +85,7 @@ export default function App() {
     isChatScreen
       ? "h-[100dvh] overflow-hidden"
       : "min-h-screen"
-  } bg-[#f3f6f6] dark:bg-[#0d1211] flex flex-col transition-colors duration-300`}>
+  } bg-[#FFFFFF] dark:bg-[#0d1211] flex flex-col transition-colors duration-300`}>
 
       {/* Public Navigation */}
       {!user && (
@@ -120,8 +121,8 @@ export default function App() {
                   className="
                     px-3 py-2 rounded-lg
                     text-sm font-semibold
-                    text-[#10201f] dark:text-white
-                    hover:bg-[#eaf0ef] dark:hover:bg-[#202a28]
+                    text-[#10201f] dark:text-[#FFFFFF]
+                    hover:bg-[#eaf0ef] dark:hover:bg-[#26322f]
                     transition cursor-pointer
                   "
                 >
@@ -134,8 +135,8 @@ export default function App() {
                   className="
                     px-3 py-2 rounded-lg
                     text-sm font-semibold
-                    text-[#10201f] dark:text-white
-                    hover:bg-[#eaf0ef] dark:hover:bg-[#202a28]
+                    text-[#10201f] dark:text-[#FFFFFF]
+                    hover:bg-[#eaf0ef] dark:hover:bg-[#26322f]
                     transition cursor-pointer
                   "
                 >
@@ -148,8 +149,8 @@ export default function App() {
                   className="
                     px-3 py-2 rounded-lg
                     text-sm font-semibold
-                    text-[#10201f] dark:text-white
-                    hover:bg-[#eaf0ef] dark:hover:bg-[#202a28]
+                    text-[#10201f] dark:text-[#FFFFFF]
+                    hover:bg-[#eaf0ef] dark:hover:bg-[#26322f]
                     transition cursor-pointer
                   "
                 >
@@ -162,8 +163,8 @@ export default function App() {
                   className="
                     px-3 py-2 rounded-lg
                     text-sm font-semibold
-                    text-[#10201f] dark:text-white
-                    hover:bg-[#eaf0ef] dark:hover:bg-[#202a28]
+                    text-[#10201f] dark:text-[#FFFFFF]
+                    hover:bg-[#eaf0ef] dark:hover:bg-[#26322f]
                     transition cursor-pointer
                   "
                 >
@@ -184,11 +185,11 @@ export default function App() {
                 className="
                   md:hidden
                   w-10 h-10 rounded-lg
-                  bg-[#eaf0ef] dark:bg-[#202a28]
-                  text-[#10201f] dark:text-white
+                  bg-[#eaf0ef] dark:bg-[#26322f]
+                  text-[#10201f] dark:text-[#FFFFFF]
                   text-xl font-semibold
                   cursor-pointer
-                  hover:bg-[#d9e2e1] dark:hover:bg-[#2c3936]
+                  hover:bg-[#d9e2e1] dark:hover:bg-[#26322f]
                   transition
                 "
                 aria-label="Toggle navigation menu"
@@ -220,8 +221,8 @@ export default function App() {
                   block w-full text-left
                   px-3 py-2 rounded-lg
                   text-sm font-semibold
-                  text-[#10201f] dark:text-white
-                  hover:bg-[#eaf0ef] dark:hover:bg-[#202a28]
+                  text-[#10201f] dark:text-[#FFFFFF]
+                  hover:bg-[#eaf0ef] dark:hover:bg-[#26322f]
                   transition cursor-pointer
                 "
               >
@@ -236,8 +237,8 @@ export default function App() {
                   block w-full text-left
                   px-3 py-2 rounded-lg
                   text-sm font-semibold
-                  text-[#10201f] dark:text-white
-                  hover:bg-[#eaf0ef] dark:hover:bg-[#202a28]
+                  text-[#10201f] dark:text-[#FFFFFF]
+                  hover:bg-[#eaf0ef] dark:hover:bg-[#26322f]
                   transition cursor-pointer
                 "
               >
@@ -252,8 +253,8 @@ export default function App() {
                   block w-full text-left
                   px-3 py-2 rounded-lg
                   text-sm font-semibold
-                  text-[#10201f] dark:text-white
-                  hover:bg-[#eaf0ef] dark:hover:bg-[#202a28]
+                  text-[#10201f] dark:text-[#FFFFFF]
+                  hover:bg-[#eaf0ef] dark:hover:bg-[#26322f]
                   transition cursor-pointer
                 "
               >
@@ -268,8 +269,8 @@ export default function App() {
                   block w-full text-left
                   px-3 py-2 rounded-lg
                   text-sm font-semibold
-                  text-[#10201f] dark:text-white
-                  hover:bg-[#eaf0ef] dark:hover:bg-[#202a28]
+                  text-[#10201f] dark:text-[#FFFFFF]
+                  hover:bg-[#eaf0ef] dark:hover:bg-[#26322f]
                   transition cursor-pointer
                 "
               >
@@ -314,6 +315,13 @@ export default function App() {
           <AccessDenied onNavigate={navigateTo} />
         )}
 
+        {/* My Profile */}
+        {currentScreen === "profile" && user && (
+          <MyProfile
+            user={user}
+            onBack={() => navigateTo("home")}/>
+        )}
+
         {/* Home / Chat */}
         {currentScreen === "home" && (
           user ? (
@@ -327,10 +335,10 @@ export default function App() {
               <Home
                 user={user}
                 onOpenChat={(contact) => setSelectedContact(contact)}
-              />
+                onOpenProfile={() => navigateTo("profile")}/>
             )
           ) : (
-            <Login onNavigate={navigateTo} />
+            <Login onNavigate={navigateTo}/>
           )
         )}
 

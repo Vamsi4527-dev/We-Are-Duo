@@ -36,20 +36,20 @@ export default function Logo({
 
   return (
     <div
-      className={`inline-flex items-center gap-2.5 font-bold tracking-tight text-[#10201f] dark:text-white leading-none ${currentSize.text}`}
+      className={`inline-flex items-center gap-2.5 font-bold tracking-tight text-[#10201f] dark:text-[#FFFFFF] leading-none ${currentSize.text}`}
     >
       <span
         className={`relative flex-none ${currentSize.mark}`}
         aria-hidden="true"
       >
         <span
-          className={`absolute left-0 top-0 ${currentSize.circle} rounded-full ${currentSize.border} border-teal-700 dark:border-teal-500 ${
+          className={`absolute left-0 top-0 ${currentSize.circle} rounded-full ${currentSize.border} border-[#0f766e] dark:border-[#2dd4bf] ${
             animated ? "animate-ring-left" : ""
           }`}
         />
 
         <span
-          className={`absolute right-0 top-0 ${currentSize.circle} rounded-full ${currentSize.border} border-[#10201f] dark:border-white ${
+          className={`absolute right-0 top-0 ${currentSize.circle} rounded-full ${currentSize.border} border-[#10201f] dark:border-[#FFFFFF] ${
             animated ? "animate-ring-right" : ""
           }`}
         />

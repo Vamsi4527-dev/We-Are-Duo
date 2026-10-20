@@ -158,8 +158,8 @@ export default function Chat({ user, contact, onBack }) {
     <main
       className="
         h-[100dvh]
-        bg-[#f3f6f6] dark:bg-[#0d1211]
-        text-[#10201f] dark:text-white
+        bg-[#FFFFFF] dark:bg-[#0d1211]
+        text-[#10201f] dark:text-[#FFFFFF]
         flex flex-col
         overflow-hidden
         transition-colors duration-300
@@ -174,7 +174,7 @@ export default function Chat({ user, contact, onBack }) {
           h-16 flex-shrink-0
           bg-white dark:bg-[#111817]
           border-b
-          border-[#d9e2e1] dark:border-[#293432]
+          border-[#d9e2e1] dark:border-[#303c39]
           px-4 sm:px-6
           flex items-center justify-between
           transition-colors duration-300
@@ -191,26 +191,51 @@ export default function Chat({ user, contact, onBack }) {
               flex-shrink-0
               w-10 h-10
               rounded-lg
-              bg-[#eaf0ef] dark:bg-[#202a28]
-              text-[#10201f] dark:text-white
+              bg-[#eaf0ef] dark:bg-[#26322f]
+              text-[#10201f] dark:text-[#FFFFFF]
               font-semibold
               hover:bg-[#d9e2e1]
-              dark:hover:bg-[#2c3936]
+              dark:hover:bg-[#26322f]
               transition-colors duration-200
-              cursor-pointer
-            "
-          >
+              cursor-pointer">
             ←
           </button>
+
+          <div className="flex items-center gap-3 min-w-0">
+              {contact?.photoURL ? (
+                <img
+                  src={contact.photoURL}
+                  alt={`${contact.fullName || "Contact"} profile`}
+                  className="
+                    w-10 h-10
+                    rounded-full
+                    object-cover
+                    flex-shrink-0
+                    border border-[#d9e2e1] dark:border-[#303c39]"/>
+                ) : (
+
+                <div
+                  className="
+                    w-10 h-10
+                    rounded-full
+                    flex-shrink-0
+                    flex items-center justify-center
+                    bg-[#eaf0ef] dark:bg-[#26322f]
+                    border border-[#d9e2e1] dark:border-[#303c39]
+                    text-[#10201f] dark:text-white
+                    text-sm font-bold">
+                  {(contact?.fullName || "?")
+                    .charAt(0)
+                    .toUpperCase()}
+                </div>
+              )}
 
           <div className="min-w-0">
             <h1
               className="
                 text-lg font-bold truncate
                 text-[#10201f] dark:text-white
-                transition-colors duration-300
-              "
-            >
+                transition-colors duration-300">
               {contact.fullName}
             </h1>
 
@@ -222,14 +247,13 @@ export default function Chat({ user, contact, onBack }) {
                   contactStatus.online
                     ? "text-teal-700 dark:text-teal-400"
                     : "text-[#566867] dark:text-[#aab8b5]"
-                }
-              `}
-            >
+                }`}>
               {contactStatus.online
                 ? "● Online"
                 : "● Offline"}
             </p>
           </div>
+        </div>
         </div>
 
         {/* Right side */}
@@ -347,8 +371,8 @@ export default function Chat({ user, contact, onBack }) {
                 rounded-xl
                 border
                 border-[#b3c2c0]
-                dark:border-[#46534f]
-                bg-[#f3f6f6]
+                dark:border-[#303c39]
+                bg-[#eaf0ef]
                 dark:bg-[#101615]
                 px-3 py-2
                 transition-colors duration-300
@@ -360,7 +384,7 @@ export default function Chat({ user, contact, onBack }) {
                   w-1
                   self-stretch
                   rounded-full
-                  bg-teal-700
+                  bg-[#0f766e]
                   flex-shrink-0
                 "
               />
@@ -370,7 +394,7 @@ export default function Chat({ user, contact, onBack }) {
                 <p
                   className="
                     text-xs font-semibold
-                    text-teal-700 dark:text-teal-400
+                    text-[#0f766e] dark:text-[#2dd4bf]
                   "
                 >
                   Replying to message
@@ -400,7 +424,7 @@ export default function Chat({ user, contact, onBack }) {
                   text-[#566867]
                   dark:text-[#aab8b5]
                   hover:bg-[#d9e2e1]
-                  dark:hover:bg-[#202a28]
+                  dark:hover:bg-[#26322f]
                   transition-colors duration-200
                   cursor-pointer
                 "
@@ -437,15 +461,15 @@ export default function Chat({ user, contact, onBack }) {
                 min-w-0 flex-1
                 h-11 px-4
                 border border-[#b3c2c0]
-                dark:border-[#46534f]
+                dark:border-[#303c39]
                 rounded-xl
-                bg-white dark:bg-[#101615]
-                text-[#10201f] dark:text-white
+                bg-white dark:bg-[#151c1b]
+                text-[#10201f] dark:text-[#FFFFFF]
                 placeholder:text-[#566867]
-                dark:placeholder:text-[#7f908b]
+                dark:placeholder:text-[#aab8b5]
                 focus:outline-none
                 focus:ring-2
-                focus:ring-teal-700
+                focus:ring-[#0f766e]
                 focus:border-transparent
                 transition-colors duration-300
               "
@@ -460,9 +484,9 @@ export default function Chat({ user, contact, onBack }) {
                 flex-shrink-0
                 h-11 px-5
                 rounded-xl
-                bg-teal-700
+                bg-[#0f766e]
                 hover:bg-[#0b5f58]
-                text-white
+                text-[#FFFFFF]
                 font-semibold
                 transition-all duration-200
                 disabled:opacity-50
@@ -666,8 +690,8 @@ function SwipeableMessage({
           rounded-full
           bg-[#eaf0ef]
           dark:bg-[#26322f]
-          text-teal-700
-          dark:text-teal-400
+          text-[#0f766e]
+          dark:text-[#0f766e]
           grid place-items-center
           text-lg
           pointer-events-none
@@ -695,8 +719,8 @@ function SwipeableMessage({
           select-none
           ${
             isMine
-              ? "bg-teal-700 text-white rounded-br-md"
-              : "bg-[#eaf0ef] dark:bg-[#26322f] text-[#10201f] dark:text-white rounded-bl-md"
+              ? "bg-[#0f766e] text-[#FFFFFF] rounded-br-md"
+              : "bg-[#eaf0ef] dark:bg-[#26322f] text-[#10201f] dark:text-[#FFFFFF] rounded-bl-md"
           }
         `}
         style={{
@@ -717,12 +741,12 @@ function SwipeableMessage({
               mb-2
               rounded-lg
               border-l-4
-              border-teal-400
+              border-[#2dd4bf]
               px-3 py-2
               ${
                 isMine
-                  ? "bg-[#0b5f58]"
-                  : "bg-[#d9e2e1] dark:bg-[#202a28]"
+                  ? "bg-black/20"
+                  : "bg-[#d9e2e1] dark:bg-[#151c1b]"
               }
             `}
           >
@@ -732,8 +756,8 @@ function SwipeableMessage({
                 font-semibold
                 ${
                   isMine
-                    ? "text-teal-100"
-                    : "text-teal-700 dark:text-teal-400"
+                    ? "text-[#FFFFFF]"
+                    : "text-[#0f766e] dark:text-[#2dd4bf]"
                 }
               `}
             >
@@ -745,7 +769,7 @@ function SwipeableMessage({
               truncate
             ${
               isMine
-              ? "text-teal-50"
+              ? "text-[#FFFFFF]"
               : "text-[#566867] dark:text-[#aab8b5]"}`}>
               {message.replyTo.text}
             </p>
@@ -758,7 +782,7 @@ function SwipeableMessage({
             <span
               className={`block mt-1 text-[10px] text-right ${
                 isMine
-                  ? "text-teal-100"
+                  ? "text-[#FFFFFF]"
                   : "text-[#566867] dark:text-[#aab8b5]"}`}>
               {message.createdAt.toDate().toLocaleTimeString("en-IN", {
                 hour: "numeric",
