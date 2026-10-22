@@ -3,6 +3,8 @@ import {
   getChatId,
   listenToMessages,
   sendMessage,
+  markMessageDelivered,
+  markMessageRead,
 } from "../firebase/chat";
 import { listenToUserStatus } from "../firebase/presence";
 import ThemeToggle from "./ThemeToggle";
@@ -62,6 +64,29 @@ export default function Chat({
   const [replyingTo, setReplyingTo] = useState(null);
 
   const messagesEndRef = useRef(null);
+  const deliveredMessageIdsRef = useRef(new Set());
+  const readMessageIdsRef = useRef(new Set());
+
+  const handleMarkMessageRead = (message) => {
+  if (
+    message.senderId === user.uid ||
+    message.readAt ||
+    readMessageIdsRef.current.has(message.id)
+  ) {
+    return;
+  }
+
+  readMessageIdsRef.current.add(message.id);
+
+  markMessageRead(chatId, message.id).catch((error) => {
+    readMessageIdsRef.current.delete(message.id);
+
+    console.error(
+      "Failed to mark message as read:",
+      error
+    );
+  });
+};
 
   const [contactStatus, setContactStatus] =
     useState({
@@ -99,16 +124,32 @@ export default function Chat({
      ========================================================= */
 
   useEffect(() => {
-    const unsubscribe =
-      listenToMessages(
-        chatId,
-        (newMessages) => {
-          setMessages(newMessages);
-        }
-      );
+    const unsubscribe=
+    listenToMessages(
+      chatId,
+      (newMessages) => {
+        setMessages(newMessages);
 
-    return unsubscribe;
-  }, [chatId]);
+        newMessages.forEach((message) => {
+          if (
+            message.senderId !== user.uid &&
+            !message.deliveredAt &&
+            !deliveredMessageIdsRef.current.has(message.id)) {
+            deliveredMessageIdsRef.current.add(message.id);
+
+            markMessageDelivered(chatId, message.id).catch((error) => {
+              deliveredMessageIdsRef.current.delete(message.id);
+              console.error(
+                "Failed to mark message as delivered:",
+                error
+              );
+            });
+          }
+        });
+      }
+    );
+  return unsubscribe;}, 
+  [chatId, user.uid]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
@@ -474,7 +515,7 @@ export default function Chat({
                         message={message}
                         isMine={isMine}
                         onReply={handleReply}
-                      />
+                        onRead={handleMarkMessageRead}/>
                     </div>
                   );
                 }
@@ -721,9 +762,47 @@ function SwipeableMessage({
   message,
   isMine,
   onReply,
+  onRead,
 }) {
   const startX = useRef(0);
   const currentX = useRef(0);
+  const messageRef = useRef(null);
+
+  useEffect(() => {
+  if (
+    isMine ||
+    message.readAt ||
+    !messageRef.current
+  ) {
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (
+        entry.isIntersecting &&
+        entry.intersectionRatio >= 0.6
+      ) {
+        onRead(message);
+        observer.disconnect();
+      }
+    },
+    {
+      threshold: [0.6],
+    }
+  );
+
+  observer.observe(messageRef.current);
+
+  return () => {
+    observer.disconnect();
+  };
+}, [
+  isMine,
+  message.readAt,
+  message.id,
+  onRead,
+]);
 
   const [dragDistance, setDragDistance] =
     useState(0);
@@ -892,12 +971,10 @@ function SwipeableMessage({
           isMine
             ? "justify-end"
             : "justify-start"
-        }
-      `}
+        }`}
       style={{
         touchAction: "pan-y",
-      }}
-    >
+      }}>
       {/* ===================================================
           REPLY ICON
           =================================================== */}
@@ -917,12 +994,12 @@ function SwipeableMessage({
           dark:text-[#0f766e]
           grid place-items-center
           text-lg
-          pointer-events-none
-        "
+          pointer-events-none"
+
+
         style={{
           opacity: replyIconOpacity,
-        }}
-      >
+        }}>
         ↩
       </span>
 
@@ -931,6 +1008,7 @@ function SwipeableMessage({
           =================================================== */}
 
       <div
+        ref={messageRef}
         onPointerDown={
           handlePointerDown
         }
@@ -952,16 +1030,14 @@ function SwipeableMessage({
             isMine
               ? "bg-[#0f766e] text-[#FFFFFF] rounded-br-md"
               : "bg-[#eaf0ef] dark:bg-[#26322f] text-[#10201f] dark:text-[#FFFFFF] rounded-bl-md"
-          }
-        `}
+          }`}
         style={{
           transform: `translateX(${dragDistance}px)`,
           transition: isDragging
             ? "none"
             : "transform 0.2s ease",
           willChange: "transform",
-        }}
-      >
+        }}>
         {/* =================================================
             QUOTED MESSAGE
             ================================================= */}
@@ -978,9 +1054,7 @@ function SwipeableMessage({
                 isMine
                   ? "bg-black/20"
                   : "bg-[#d9e2e1] dark:bg-[#151c1b]"
-              }
-            `}
-          >
+              }`}>
             <p
               className={`
                 text-xs
@@ -989,9 +1063,7 @@ function SwipeableMessage({
                   isMine
                     ? "text-[#FFFFFF]"
                     : "text-[#0f766e] dark:text-[#2dd4bf]"
-                }
-              `}
-            >
+                }`}>
               Reply
             </p>
 
@@ -1003,9 +1075,7 @@ function SwipeableMessage({
                   isMine
                     ? "text-[#FFFFFF]"
                     : "text-[#566867] dark:text-[#aab8b5]"
-                }
-              `}
-            >
+                }`}>
               {message.replyTo.text}
             </p>
           </div>
@@ -1017,18 +1087,19 @@ function SwipeableMessage({
 
           {message.createdAt && (
             <span
-              className={`
-                block
-                mt-1
-                text-[10px]
-                text-right
-                ${
-                  isMine
-                    ? "text-[#FFFFFF]"
-                    : "text-[#566867] dark:text-[#aab8b5]"
-                }
-              `}
-            >
+            className={`
+              mt-1
+              flex
+              items-center
+              justify-end
+              gap-1
+              text-[10px]
+              ${
+                isMine
+                  ? "text-[#FFFFFF]"
+                  : "text-[#566867] dark:text-[#aab8b5]"
+              }`}>
+            <span>
               {message.createdAt
                 .toDate()
                 .toLocaleTimeString(
@@ -1040,6 +1111,32 @@ function SwipeableMessage({
                   }
                 )}
             </span>
+
+            {isMine && (
+              <span
+                className={`
+                  text-[14px]
+                  ${
+                    message.readAt
+                      ? "text-sky-300"
+                      : ""
+                  }
+                `}
+                aria-label={
+                  message.readAt
+                    ? "Read"
+                    : message.deliveredAt
+                    ? "Delivered"
+                    : "Sent"
+                }>
+                {message.readAt
+                  ? "✓✓"
+                  : message.deliveredAt
+                  ? "✓✓"
+                  : "✓"}
+              </span>
+            )}
+          </span>
           )}
         </p>
       </div>

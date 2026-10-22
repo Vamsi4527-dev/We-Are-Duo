@@ -1,12 +1,12 @@
 import {
-  addDoc,
   collection,
   doc,
   onSnapshot,
   orderBy,
   query,
   serverTimestamp,
-  setDoc,
+  updateDoc,
+  writeBatch,
 } from "firebase/firestore";
 
 import { db } from "./config";
@@ -30,29 +30,25 @@ export async function sendMessage(
   }
 
   const trimmedText = text.trim();
+
   if (trimmedText.length === 0) {
     throw new Error("Message cannot be empty.");
   }
 
   if (trimmedText.length > MAX_MESSAGE_LENGTH) {
-    throw new Error(`Message exceeds maximum limit of ${MAX_MESSAGE_LENGTH} characters.`);
+    throw new Error(
+      `Message exceeds maximum limit of ${MAX_MESSAGE_LENGTH} characters.`
+    );
   }
 
   // Verify chat ID integrity
   const expectedChatId = getChatId(senderId, receiverId);
+
   if (chatId !== expectedChatId) {
     throw new Error("Invalid chat session ID.");
   }
 
   const chatRef = doc(db, "chats", chatId);
-
-  await setDoc(
-    chatRef,
-    {
-      participants: [senderId, receiverId].sort(),
-    },
-    { merge: true }
-  );
 
   const messagesRef = collection(
     db,
@@ -61,11 +57,15 @@ export async function sendMessage(
     "messages"
   );
 
+  const messageRef = doc(messagesRef);
+
   const messageData = {
-    senderId,
-    text: trimmedText,
-    createdAt: serverTimestamp(),
-  };
+  senderId,
+  text: trimmedText,
+  createdAt: serverTimestamp(),
+  deliveredAt: null,
+  readAt: null,
+};
 
   // Add sanitized reply information only when replying to a message
   if (replyTo && replyTo.messageId && replyTo.text) {
@@ -76,8 +76,59 @@ export async function sendMessage(
     };
   }
 
-  await addDoc(messagesRef, messageData);
+  // Write chat + message together
+  const batch = writeBatch(db);
+
+  batch.set(
+    chatRef,
+    {
+      participants: [senderId, receiverId].sort(),
+    },
+    { merge: true }
+  );
+
+  batch.set(messageRef, messageData);
+
+  await batch.commit();
 }
+
+
+export async function markMessageDelivered(chatId, messageId) {
+  if (!chatId || !messageId) {
+    throw new Error("Chat ID and message ID are required.");
+  }
+
+  const messageRef = doc(
+    db,
+    "chats",
+    chatId,
+    "messages",
+    messageId
+  );
+
+  await updateDoc(messageRef, {
+    deliveredAt: serverTimestamp(),
+  });
+}
+
+export async function markMessageRead(chatId, messageId) {
+  if (!chatId || !messageId) {
+    throw new Error("Chat ID and message ID are required.");
+  }
+
+  const messageRef = doc(
+    db,
+    "chats",
+    chatId,
+    "messages",
+    messageId
+  );
+
+  await updateDoc(messageRef, {
+    readAt: serverTimestamp(),
+  });
+}
+
 
 export function listenToMessages(chatId, callback) {
   const messagesRef = collection(
