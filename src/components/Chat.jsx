@@ -64,6 +64,8 @@ export default function Chat({
   const [replyingTo, setReplyingTo] = useState(null);
 
   const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
+const previousMessageCountRef = useRef(0);
   const deliveredMessageIdsRef = useRef(new Set());
   const readMessageIdsRef = useRef(new Set());
 
@@ -152,10 +154,38 @@ export default function Chat({
   [chatId, user.uid]);
 
   useEffect(() => {
+  const container = messagesContainerRef.current;
+
+  if (!container) {
+    return;
+  }
+
+  const previousCount = previousMessageCountRef.current;
+  const currentCount = messages.length;
+
+  const isInitialLoad =
+    previousCount === 0 && currentCount > 0;
+
+  const hasNewMessage =
+    currentCount > previousCount;
+
+  const isNearBottom =
+    container.scrollHeight -
+      container.scrollTop -
+      container.clientHeight <
+    120;
+
+  if (
+    isInitialLoad ||
+    (hasNewMessage && isNearBottom)
+  ) {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
     });
-  }, [messages]);
+  }
+
+  previousMessageCountRef.current = currentCount;
+}, [messages]);
 
   /* =========================================================
      CLOSE PROFILE PHOTO VIEWER WITH ESCAPE
@@ -441,13 +471,12 @@ export default function Chat({
               ================================================= */}
 
           <div
+            ref={messagesContainerRef}
             className="
               flex-1 min-h-0
               space-y-3
               overflow-y-auto
-              overscroll-contain
-            "
-          >
+              overscroll-contain">
             {messages.length === 0 ? (
               <div className="h-full grid place-items-center">
                 <p
