@@ -12,6 +12,7 @@ import {
   listenToRejectedConnections,
 } from "../firebase/users";
 import { setUserOffline } from "../firebase/presence";
+import {getChatId,listenToChatUnreadCount,} from "../firebase/chat";
 import Logo from "./Logo";
 import ThemeToggle from "./ThemeToggle";
 
@@ -103,6 +104,9 @@ export default function Home({
 
   const [contactsLoading, setContactsLoading] =
     useState(true);
+
+  const [unreadCounts, setUnreadCounts] =
+  useState({});
 
   const [rejectedRequests, setRejectedRequests] =
     useState([]);
@@ -207,6 +211,45 @@ export default function Home({
 
     return unsubscribe;
   }, [user]);
+
+  useEffect(() => {
+  if (!user?.uid || contacts.length === 0) {
+    return;
+  }
+
+  const unsubscribeFunctions = contacts.map(
+    (contact) => {
+      const contactUid =
+        contact.contactProfile?.uid;
+
+      if (!contactUid) {
+        return () => {};
+      }
+
+      const chatId = getChatId(
+        user.uid,
+        contactUid
+      );
+
+      return listenToChatUnreadCount(
+        chatId,
+        user.uid,
+        (count) => {
+          setUnreadCounts((current) => ({
+            ...current,
+            [chatId]: count,
+          }));
+        }
+      );
+    }
+  );
+
+  return () => {
+    unsubscribeFunctions.forEach(
+      (unsubscribe) => unsubscribe()
+    );
+  };
+}, [user, contacts]);
 
   // Listen for rejected connection requests
   useEffect(() => {
@@ -774,15 +817,12 @@ export default function Home({
                             ?.photoURL
                             ? "cursor-pointer hover:opacity-90 transition-opacity"
                             : "cursor-default"
-                        }
-                      `}
-                    >
+                        }`}>
                       <ProfileAvatar
                         profile={
                           contact.contactProfile
                         }
-                        size="w-12 h-12"
-                      />
+                        size="w-12 h-12"/>
                     </button>
 
                     <div className="min-w-0">
@@ -796,6 +836,38 @@ export default function Home({
                         Connected
                       </p>
                     </div>
+
+                    {(() => {
+                      const chatId = getChatId(
+                        user.uid,
+                        contact.contactProfile?.uid
+                      );
+
+                      const unreadCount =
+                        unreadCounts[chatId] || 0;
+
+                      if (unreadCount <= 0) {
+                        return null;
+                      }
+
+                      return (
+                        <span
+                          className="
+                            min-w-5 h-5
+                            px-1.5
+                            rounded-full
+                            bg-red-500
+                            text-white
+                            text-[11px]
+                            font-bold
+                            flex items-center justify-center
+                            flex-shrink-0">
+                          {unreadCount > 99
+                            ? "99+"
+                            : unreadCount}
+                        </span>
+                      );
+                    })()}
                   </div>
 
                   {/* Chat */}
@@ -1058,14 +1130,12 @@ export default function Home({
                               ? "cursor-pointer hover:opacity-90 transition-opacity"
                               : "cursor-default"
                           }
-                        `}
-                      >
+                        `}>
                         <ProfileAvatar
                           profile={
                             request.otherUserProfile
                           }
-                          size="w-11 h-11"
-                        />
+                          size="w-11 h-11"/>
                       </button>
 
                       <div className="min-w-0">
@@ -1102,8 +1172,7 @@ export default function Home({
           onClick={handleClosePhoto}
           role="dialog"
           aria-modal="true"
-          aria-label="Profile photo viewer"
-        >
+          aria-label="Profile photo viewer">
           <div
             className="
               relative
@@ -1112,8 +1181,7 @@ export default function Home({
             "
             onClick={(event) =>
               event.stopPropagation()
-            }
-          >
+            }>
             {/* Close Button */}
             <button
               type="button"
@@ -1132,8 +1200,7 @@ export default function Home({
                 flex items-center justify-center
                 transition-colors duration-200
                 cursor-pointer
-              "
-            >
+              ">
               ×
             </button>
 

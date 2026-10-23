@@ -5,6 +5,7 @@ import {
   sendMessage,
   markMessageDelivered,
   markMessageRead,
+  markChatAsRead,
 } from "../firebase/chat";
 import { listenToUserStatus } from "../firebase/presence";
 import ThemeToggle from "./ThemeToggle";
@@ -100,10 +101,12 @@ const previousMessageCountRef = useRef(0);
   const [selectedPhoto, setSelectedPhoto] =
     useState(null);
 
-  const chatId = getChatId(
-    user.uid,
-    contact.uid
-  );
+  const chatId = getChatId(user.uid,contact.uid);
+
+  useEffect(() => {
+  markChatAsRead(chatId, user.uid).catch((error) => {
+    console.error("Failed to mark chat as read:", error);
+  });}, [chatId, user.uid]);
 
   /* =========================================================
      CONTACT PRESENCE
@@ -282,7 +285,7 @@ const previousMessageCountRef = useRef(0);
         text,
         replyingTo
       );
-      
+
       setReplyingTo(null);
     } catch (error) {
       console.error(

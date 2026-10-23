@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  increment,
   onSnapshot,
   orderBy,
   query,
@@ -80,12 +81,13 @@ export async function sendMessage(
   const batch = writeBatch(db);
 
   batch.set(
-    chatRef,
-    {
-      participants: [senderId, receiverId].sort(),
-    },
-    { merge: true }
-  );
+  chatRef,
+  {
+    participants: [senderId, receiverId].sort(),
+    [`unreadCount_${receiverId}`]: increment(1),
+  },
+  { merge: true }
+);
 
   batch.set(messageRef, messageData);
 
@@ -150,5 +152,37 @@ export function listenToMessages(chatId, callback) {
     }));
 
     callback(messages);
+  });
+}
+
+export async function markChatAsRead(chatId, uid) {
+  if (!chatId || !uid) {
+    throw new Error("Chat ID and user ID are required.");
+  }
+
+  const chatRef = doc(db, "chats", chatId);
+
+  await updateDoc(chatRef, {
+    [`unreadCount_${uid}`]: 0,
+  });
+}
+
+export function listenToChatUnreadCount(chatId, uid, callback) {
+  if (!chatId || !uid) {
+    callback(0);
+    return () => {};
+  }
+
+  const chatRef = doc(db, "chats", chatId);
+
+  return onSnapshot(chatRef, (snapshot) => {
+    if (!snapshot.exists()) {
+      callback(0);
+      return;
+    }
+
+    const data = snapshot.data();
+
+    callback(data[`unreadCount_${uid}`] || 0);
   });
 }
