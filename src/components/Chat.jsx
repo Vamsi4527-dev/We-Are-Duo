@@ -180,7 +180,7 @@ const previousMessageCountRef = useRef(0);
     (hasNewMessage && isNearBottom)
   ) {
     messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
+      behavior:"smooth",
     });
   }
 
@@ -274,7 +274,7 @@ const previousMessageCountRef = useRef(0);
 
     try {
       setSending(true);
-
+      setMessageText("");
       await sendMessage(
         chatId,
         user.uid,
@@ -282,8 +282,7 @@ const previousMessageCountRef = useRef(0);
         text,
         replyingTo
       );
-
-      setMessageText("");
+      
       setReplyingTo(null);
     } catch (error) {
       console.error(
