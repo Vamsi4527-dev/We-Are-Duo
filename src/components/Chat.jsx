@@ -7,7 +7,12 @@ import {
   markMessageRead,
   markChatAsRead,
 } from "../firebase/chat";
-import { listenToUserStatus } from "../firebase/presence";
+import {
+  listenToUserStatus,
+  setUserTyping,
+  setUserNotTyping,
+  listenToTypingStatus,
+} from "../firebase/presence";
 import ThemeToggle from "./ThemeToggle";
 
 const REPLY_THRESHOLD = 50;
@@ -66,9 +71,10 @@ export default function Chat({
 
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
-const previousMessageCountRef = useRef(0);
+  const previousMessageCountRef = useRef(0);
   const deliveredMessageIdsRef = useRef(new Set());
   const readMessageIdsRef = useRef(new Set());
+  const typingTimeoutRef = useRef(null);
 
   const handleMarkMessageRead = (message) => {
   if (
@@ -97,6 +103,9 @@ const previousMessageCountRef = useRef(0);
       lastSeen: null,
     });
 
+  const [contactTyping, setContactTyping] =
+  useState(false);
+
   // Profile photo viewer
   const [selectedPhoto, setSelectedPhoto] =
     useState(null);
@@ -123,6 +132,36 @@ const previousMessageCountRef = useRef(0);
 
     return unsubscribe;
   }, [contact.uid]);
+
+  useEffect(() => {
+  const unsubscribe = listenToTypingStatus(
+    chatId,
+    contact.uid,
+    (isTyping) => {
+      setContactTyping(isTyping);
+    }
+  );
+
+  return unsubscribe;
+},[chatId, contact.uid]);
+
+useEffect(() => {
+  return () => {
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    setUserNotTyping(
+      chatId,
+      user.uid
+    ).catch((error) => {
+      console.error(
+        "Failed to clear typing status:",
+        error
+      );
+    });
+  };
+}, [chatId, user.uid]);
 
   /* =========================================================
      LISTEN TO MESSAGES
@@ -301,8 +340,8 @@ const previousMessageCountRef = useRef(0);
     <main
       className="
         h-[100dvh]
-        bg-[#FFFFFF] dark:bg-[#0d1211]
-        text-[#10201f] dark:text-[#FFFFFF]
+        bg-[#FFFFFF] dark:bg-[#151C1B]
+        text-[#10201F] dark:text-[#FFFFFF]
         flex flex-col
         overflow-hidden
         transition-colors duration-300
@@ -317,7 +356,7 @@ const previousMessageCountRef = useRef(0);
           h-16 flex-shrink-0
           bg-white dark:bg-[#111817]
           border-b
-          border-[#d9e2e1] dark:border-[#303c39]
+          border-[#D9E2E1] dark:border-[#303C39]
           px-4 sm:px-6
           flex items-center justify-between
           transition-colors duration-300
@@ -334,15 +373,15 @@ const previousMessageCountRef = useRef(0);
               flex-shrink-0
               w-10 h-10
               rounded-lg
-              bg-[#eaf0ef] dark:bg-[#26322f]
-              text-[#10201f] dark:text-[#FFFFFF]
+              bg-[#EAF0EF]
+              dark:bg-[#26322F] dark:text-[#AAB8B5]
+              text-[#10201F] dark:text-[#FFFFFF]
               font-semibold
-              hover:bg-[#d9e2e1]
-              dark:hover:bg-[#26322f]
+              hover:bg-[#D9E2E1]
+              dark:hover:bg-[#303C39]
               transition-colors duration-200
-              cursor-pointer
-            "
-          >
+              cursor-pointer">
+
             ←
           </button>
 
@@ -380,8 +419,8 @@ const previousMessageCountRef = useRef(0);
                     object-cover
                     flex-shrink-0
                     border
-                    border-[#d9e2e1]
-                    dark:border-[#303c39]
+                    border-[#D9E2E1]
+                    dark:border-[#303C39]
                   "
                 />
               ) : (
@@ -391,11 +430,11 @@ const previousMessageCountRef = useRef(0);
                     rounded-full
                     flex-shrink-0
                     flex items-center justify-center
-                    bg-[#eaf0ef] dark:bg-[#26322f]
+                    bg-[#F1F5F4] dark:bg-[#26322F]
                     border
-                    border-[#d9e2e1]
-                    dark:border-[#303c39]
-                    text-[#10201f]
+                    border-[#D9E2E1]
+                    dark:border-[#303C39]
+                    text-[#10201F]
                     dark:text-white
                     text-sm font-bold
                   "
@@ -425,8 +464,8 @@ const previousMessageCountRef = useRef(0);
                   transition-colors duration-300
                   ${
                     contactStatus.online
-                      ? "text-teal-700 dark:text-teal-400"
-                      : "text-[#566867] dark:text-[#aab8b5]"
+                      ? "text-[#7F908B]"
+                      : "text-[#566867] dark:text-[#7F908B]"
                   }
                 `}
               >
@@ -459,8 +498,8 @@ const previousMessageCountRef = useRef(0);
         <div
           className="
             h-full
-            bg-white dark:bg-[#151c1b]
-            border border-[#d9e2e1] dark:border-[#303c39]
+            bg-white dark:bg-[#151C1B]
+            border border-[#D9E2E1] dark:border-[#303C39]
             rounded-2xl
             p-4
             flex flex-col
@@ -484,7 +523,7 @@ const previousMessageCountRef = useRef(0);
                 <p
                   className="
                     text-sm
-                    text-[#566867] dark:text-[#aab8b5]
+                    text-[#566867] dark:text-[#7F908B]
                     transition-colors duration-300
                   "
                 >
@@ -530,10 +569,10 @@ const previousMessageCountRef = useRef(0);
                                 rounded-full
                                 text-xs
                                 font-medium
-                                bg-[#eaf0ef]
-                                dark:bg-[#26322f]
-                                text-[#566867]
-                                dark:text-[#aab8b5]
+                                bg-[#EAF0EF]
+                                dark:bg-[#EAF0EF]
+                                text-[#10201F]
+                                dark:text-[#10201F]
                                 transition-colors duration-300
                               "
                             >
@@ -567,21 +606,21 @@ const previousMessageCountRef = useRef(0);
                 flex items-center gap-3
                 rounded-xl
                 border
-                border-[#b3c2c0]
-                dark:border-[#303c39]
-                bg-[#eaf0ef]
-                dark:bg-[#101615]
+                border-[#D9E2E1]
+                dark:border-[#303C39]
+                bg-[#F1F5F4]
+                dark:bg-[#26322F]
                 px-3 py-2
                 transition-colors duration-300
               "
             >
-              {/* Teal indicator */}
+              {/* Blue indicator */}
               <div
                 className="
                   w-1
                   self-stretch
                   rounded-full
-                  bg-[#0f766e]
+                  bg-[#0F766E] dark:bg-[#0F766E]
                   flex-shrink-0
                 "
               />
@@ -591,8 +630,8 @@ const previousMessageCountRef = useRef(0);
                 <p
                   className="
                     text-xs font-semibold
-                    text-[#0f766e]
-                    dark:text-[#2dd4bf]
+                    text-[#0F766E]
+                    dark:text-[#0F766E]
                   "
                 >
                   Replying to message
@@ -602,7 +641,7 @@ const previousMessageCountRef = useRef(0);
                   className="
                     text-sm truncate
                     text-[#566867]
-                    dark:text-[#aab8b5]
+                    dark:text-[#7F908B]
                   "
                 >
                   {replyingTo.text}
@@ -620,15 +659,36 @@ const previousMessageCountRef = useRef(0);
                   rounded-full
                   grid place-items-center
                   text-[#566867]
-                  dark:text-[#aab8b5]
-                  hover:bg-[#d9e2e1]
-                  dark:hover:bg-[#26322f]
+                  dark:text-[#7F908B]
+                  hover:bg-[#D9E2E1]
+                  dark:hover:bg-[#303C39]
                   transition-colors duration-200
-                  cursor-pointer
-                "
-              >
+                  cursor-pointer">
+
                 ✕
               </button>
+            </div>
+          )}
+
+          {contactTyping && (
+            <div className="flex items-center justify-start px-4 pb-2">
+              <div className="flex items-center gap-1 
+              rounded-full bg-[#F1F5F4] px-3 py-2.5 dark:bg-[#26322F]">
+                <span
+                  className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#566867] dark:bg-[#AAB8B5]"
+                  style={{ animationDelay: "0ms" }}
+                ></span>
+
+                <span
+                  className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#566867] dark:bg-[#AAB8B5]"
+                  style={{ animationDelay: "150ms" }}
+                ></span>
+
+                <span
+                  className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#566867] dark:bg-[#AAB8B5]"
+                  style={{ animationDelay: "300ms" }}
+                ></span>
+              </div>
             </div>
           )}
 
@@ -641,17 +701,56 @@ const previousMessageCountRef = useRef(0);
             className="
               mt-4
               flex gap-2
-              flex-shrink-0
-            "
-          >
+              flex-shrink-0">
+
+
             <input
               type="text"
               value={messageText}
               onChange={(e) => {
-                setMessageText(
-                  e.target.value
-                );
+                const value = e.target.value;
+
+                setMessageText(value);
+
+                if (value.trim()) {
+                  setUserTyping(
+                    chatId,
+                    user.uid
+                  ).catch((error) => {
+                    console.error(
+                      "Failed to set typing status:",
+                      error
+                    );
+                  });
+
+                  if (typingTimeoutRef.current) {
+                    clearTimeout(typingTimeoutRef.current);
+                  }
+
+                  typingTimeoutRef.current = setTimeout(() => {
+                    setUserNotTyping(
+                      chatId,
+                      user.uid
+                    ).catch((error) => {
+                      console.error(
+                        "Failed to clear typing status:",
+                        error
+                      );
+                    });
+                  }, 1500);
+                }else {
+                  setUserNotTyping(
+                    chatId,
+                    user.uid
+                  ).catch((error) => {
+                    console.error(
+                      "Failed to clear typing status:",
+                      error
+                    );
+                  });
+                }
               }}
+
               placeholder={
                 replyingTo
                   ? "Write a reply..."
@@ -660,17 +759,17 @@ const previousMessageCountRef = useRef(0);
               className="
                 min-w-0 flex-1
                 h-11 px-4
-                border border-[#b3c2c0]
-                dark:border-[#303c39]
+                border border-[#D9E2E1]
+                dark:border-[#303C39]
                 rounded-xl
-                bg-white dark:bg-[#151c1b]
-                text-[#10201f]
+                bg-white dark:bg-[#101615]
+                text-[#10201F]
                 dark:text-[#FFFFFF]
                 placeholder:text-[#566867]
-                dark:placeholder:text-[#aab8b5]
+                dark:placeholder:text-[#7F908B]
                 focus:outline-none
                 focus:ring-2
-                focus:ring-[#0f766e]
+                focus:ring-[#0F766E] dark:focus:ring-[#0F766E]
                 focus:border-transparent
                 transition-colors duration-300
               "
@@ -686,8 +785,8 @@ const previousMessageCountRef = useRef(0);
                 flex-shrink-0
                 h-11 px-5
                 rounded-xl
-                bg-[#0f766e]
-                hover:bg-[#0b5f58]
+                bg-[#0F766E] dark:bg-[#0F766E]
+                hover:bg-[#0F766E] dark:hover:bg-[#0F766E]
                 text-[#FFFFFF]
                 font-semibold
                 transition-all duration-200
@@ -710,7 +809,7 @@ const previousMessageCountRef = useRef(0);
           className="
             fixed inset-0
             z-[100]
-            bg-black/80
+            bg-[#0D1211]/80
             flex items-center justify-center
             p-4
           "
@@ -740,8 +839,8 @@ const previousMessageCountRef = useRef(0);
                 -top-12
                 w-10 h-10
                 rounded-full
-                bg-white/10
-                hover:bg-white/20
+                bg-[#151C1B]
+                hover:bg-[#26322F]
                 text-white
                 text-2xl
                 flex items-center justify-center
@@ -1060,7 +1159,7 @@ function SwipeableMessage({
           ${
             isMine
               ? "bg-[#0f766e] text-[#FFFFFF] rounded-br-md"
-              : "bg-[#eaf0ef] dark:bg-[#26322f] text-[#10201f] dark:text-[#FFFFFF] rounded-bl-md"
+              : "bg-[#F1F5F4] dark:bg-[#26322F] text-[#10201f] dark:text-[#FFFFFF] rounded-bl-md"
           }`}
         style={{
           transform: `translateX(${dragDistance}px)`,
@@ -1079,12 +1178,12 @@ function SwipeableMessage({
               mb-2
               rounded-lg
               border-l-4
-              border-[#2dd4bf]
+              border-[#0F766E] dark:border-[#0F766E]
               px-3 py-2
               ${
                 isMine
-                  ? "bg-black/20"
-                  : "bg-[#d9e2e1] dark:bg-[#151c1b]"
+                  ? "bg-[#10201F]"
+                  : "bg-[#D9E2E1] dark:bg-[#0D1211]"
               }`}>
             <p
               className={`
@@ -1093,7 +1192,7 @@ function SwipeableMessage({
                 ${
                   isMine
                     ? "text-[#FFFFFF]"
-                    : "text-[#0f766e] dark:text-[#2dd4bf]"
+                    : "text-[#0F766E] dark:text-[#0F766E]"
                 }`}>
               Reply
             </p>
@@ -1105,7 +1204,7 @@ function SwipeableMessage({
                 ${
                   isMine
                     ? "text-[#FFFFFF]"
-                    : "text-[#566867] dark:text-[#aab8b5]"
+                    : "text-[#566867] dark:text-[#7F908B]"
                 }`}>
               {message.replyTo.text}
             </p>
@@ -1128,7 +1227,7 @@ function SwipeableMessage({
               ${
                 isMine
                   ? "text-[#FFFFFF]"
-                  : "text-[#566867] dark:text-[#aab8b5]"
+                  : "text-[#566867] dark:text-[#7F908B]"
               }`}>
             <span>
               {message.createdAt
@@ -1149,8 +1248,8 @@ function SwipeableMessage({
                   text-[14px]
                   ${
                     message.readAt
-                      ? "text-sky-300"
-                      : ""
+                      ? "text-[#FFFFFF]"
+                      : "text-[#FFFFFF]"
                   }
                 `}
                 aria-label={

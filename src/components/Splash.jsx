@@ -19,7 +19,7 @@ export default function Splash({ onNavigate }) {
         <button
           type="button"
           onClick={() => onNavigate("login")}
-          className="w-full h-11 px-5 rounded-[10px] bg-white dark:bg-[#151c1b] border border-[#b3c2c0]
+          className="w-full h-11 px-5 rounded-[10px] bg-white dark:bg-[#151c1b] border border-[#d9e2e1]
           dark:border-[#303c39] text-[#10201f] dark:text-[#FFFFFF] font-semibold hover:bg-[#eaf0ef] dark:hover:bg-[#26322f] transition cursor-pointer">
           Continue to sign in
         </button>

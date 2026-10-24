@@ -19,7 +19,7 @@
 
 /* ---------------------------------------------------------
    1. DESIGN TOKENS
-   Palette tokens for the dark rose theme used across the
+   Palette tokens for the teal theme used across the
    standalone HTML screens.
    --------------------------------------------------------- */
 :root {
@@ -28,25 +28,27 @@
   /* Surfaces and text */
   --color-bg:            #FFFFFF;
   --color-surface:       #FFFFFF;
-  --color-surface-2:     #eaf0ef;
-  --color-text:          #10201f;
-  --color-muted:         #566867;
-  --color-border:        #d9e2e1;
-  --color-border-strong: #b3c2c0;
+  --color-surface-2:     #F1F5F4;
+  --color-input:         #FFFFFF;
+  --color-text:          #10201F;
+  --color-secondary:     #566867;
+  --color-muted:         #7F908B;
+  --color-border:        #D9E2E1;
+  --color-border-strong: #46534F;
 
-  --color-primary:       #0f766e;
-  --color-primary-hover: #0b5f58;
+  --color-primary:       #0F766E;
+  --color-primary-hover: #0F766E;
   --color-on-primary:    #FFFFFF;
-  --color-primary-soft:  #eaf0ef;
-  --color-focus:         #0f766e;
+  --color-primary-soft:  #EAF0EF;
+  --color-focus:         #0F766E;
 
   /* Meaning colours */
-  --color-danger:        #b42318;
-  --color-danger-soft:   #fdecea;
-  --color-success:       #0a6b45;
-  --color-success-soft:  #e3f5ec;
-  --color-warning:       #9a5b00;
-  --color-warning-soft:  #fdf1dc;
+  --color-danger:        #EF4444;
+  --color-danger-soft:   #F1F5F4;
+  --color-success:       #0F766E;
+  --color-success-soft:  #F1F5F4;
+  --color-warning:       #7F908B;
+  --color-warning-soft:  #F1F5F4;
 
   /* Shadow */
   --shadow-color: rgb(0 0 0 / 0.10);
@@ -94,23 +96,25 @@
   --color-bg:            #0d1211;
   --color-surface:       #151c1b;
   --color-surface-2:     #26322f;
+  --color-input:         #101615;
   --color-text:          #FFFFFF;
-  --color-muted:         #aab8b5;
+  --color-secondary:     #AAB8B5;
+  --color-muted:         #7F908B;
   --color-border:        #303c39;
   --color-border-strong: #46534f;
 
   --color-primary:       #0f766e;
-  --color-primary-hover: #14b8a6;
+  --color-primary-hover: #0F766E;
   --color-on-primary:    #FFFFFF;
   --color-primary-soft:  #26322f;
-  --color-focus:         #2dd4bf;
+  --color-focus:         #0F766E;
 
-  --color-danger:        #2dd4bf;
-  --color-danger-soft:   #26322f;
-  --color-success:       #2dd4bf;
-  --color-success-soft:  #26322f;
-  --color-warning:       #2dd4bf;
-  --color-warning-soft:  #26322f;
+  --color-danger:        #EF4444;
+  --color-danger-soft:   #26322F;
+  --color-success:       #0F766E;
+  --color-success-soft:  #26322F;
+  --color-warning:       #7F908B;
+  --color-warning-soft:  #26322F;
 
   --shadow-color: rgb(0 0 0 / 0.50);
 }
@@ -421,7 +425,7 @@ a:hover {
   padding: 0 var(--space-4);
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-control);
-  background: var(--color-surface);
+  background: var(--color-input);
   transition: border-color var(--transition), background-color var(--transition);
 }
 

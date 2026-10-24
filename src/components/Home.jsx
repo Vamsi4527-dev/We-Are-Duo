@@ -37,7 +37,7 @@ function ProfileAvatar({ profile, size = "w-11 h-11" }) {
           rounded-full
           object-cover
           flex-shrink-0
-          border border-[#d9e2e1] dark:border-[#303c39]
+          border border-[#D9E2E1] dark:border-[#303C39]
         `}
       />
     );
@@ -50,9 +50,9 @@ function ProfileAvatar({ profile, size = "w-11 h-11" }) {
         rounded-full
         flex items-center justify-center
         flex-shrink-0
-        bg-[#eaf0ef] dark:bg-[#26322f]
-        border border-[#d9e2e1] dark:border-[#303c39]
-        text-[#10201f] dark:text-white
+        bg-[#F1F5F4] dark:bg-[#26322F]
+        border border-[#D9E2E1] dark:border-[#303C39]
+        text-[#10201F] dark:text-white
         font-bold
       `}
     >
@@ -468,7 +468,7 @@ export default function Home({
     <main
       className="
         min-h-screen
-        bg-[#FFFFFF] dark:bg-[#0d1211]
+        bg-[#FFFFFF] dark:bg-[#0D1211]
         transition-colors duration-300
       "
     >
@@ -477,7 +477,7 @@ export default function Home({
         className="
           h-16
           bg-white dark:bg-[#111817]
-          border-b border-[#d9e2e1] dark:border-[#303c39]
+          border-b border-[#D9E2E1] dark:border-[#303C39]
           px-4 sm:px-6
           flex items-center
           transition-colors duration-300
@@ -487,7 +487,7 @@ export default function Home({
         <div className="min-w-0">
           <Logo size="base" />
 
-          <p className="text-xs text-[#566867] dark:text-[#aab8b5]">
+          <p className="text-xs text-[#566867] dark:text-[#7F908B]">
             conversations for two.
           </p>
         </div>
@@ -510,8 +510,8 @@ export default function Home({
                 w-10 h-10
                 rounded-lg
                 flex items-center justify-center
-                text-[#10201f] dark:text-white
-                hover:bg-[#eaf0ef] dark:hover:bg-[#26322f]
+                text-[#10201F] dark:text-white
+                hover:bg-[#F1F5F4] dark:hover:bg-[#26322F]
                 transition-colors duration-300
                 cursor-pointer
               "
@@ -527,8 +527,8 @@ export default function Home({
                   absolute right-0 top-12
                   w-44
                   rounded-xl
-                  border border-[#d9e2e1] dark:border-[#303c39]
-                  bg-white dark:bg-[#151c1b]
+                  border border-[#D9E2E1] dark:border-[#303C39]
+                  bg-white dark:bg-[#151C1B]
                   shadow-lg
                   p-2
                   z-50
@@ -549,8 +549,8 @@ export default function Home({
                     rounded-lg
                     text-left
                     text-sm font-semibold
-                    text-[#10201f] dark:text-white
-                    hover:bg-[#eaf0ef] dark:hover:bg-[#26322f]
+                    text-[#10201F] dark:text-white
+                    hover:bg-[#F1F5F4] dark:hover:bg-[#26322F]
                     transition-colors duration-300
                     cursor-pointer
                   "
@@ -572,8 +572,8 @@ export default function Home({
                     rounded-lg
                     text-left
                     text-sm font-semibold
-                    text-[#10201f] dark:text-white
-                    hover:bg-[#eaf0ef] dark:hover:bg-[#26322f]
+                    text-[#10201F] dark:text-white
+                    hover:bg-[#F1F5F4] dark:hover:bg-[#26322F]
                     transition-colors duration-300
                     cursor-pointer
                   "
@@ -597,11 +597,11 @@ export default function Home({
 
         {/* Page Heading */}
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-[#10201f] dark:text-[#FFFFFF]">
+          <h2 className="text-2xl font-bold text-[#10201F] dark:text-[#FFFFFF]">
             Contacts
           </h2>
 
-          <p className="mt-1 text-xs text-[#566867] dark:text-[#aab8b5]">
+          <p className="mt-1 text-xs text-[#566867] dark:text-[#7F908B]">
             {profileLoading
               ? "Loading profile..."
               : `Welcome ${
@@ -613,21 +613,21 @@ export default function Home({
 
         {/* Incoming Connection Requests */}
         {incomingRequestsLoading ? (
-          <p className="mb-6 text-sm text-[#566867] dark:text-[#aab8b5]">
+          <p className="mb-6 text-sm text-[#566867] dark:text-[#7F908B]">
             Loading connection requests...
           </p>
         ) : incomingRequests.length > 0 ? (
           <div
             className="
               mb-6
-              bg-white dark:bg-[#151c1b]
-              border border-[#d9e2e1] dark:border-[#303c39]
+              bg-white dark:bg-[#151C1B]
+              border border-[#D9E2E1] dark:border-[#303C39]
               rounded-2xl
               p-5
               transition-colors duration-300
             "
           >
-            <h3 className="text-lg font-bold text-[#10201f] dark:text-[#FFFFFF]">
+            <h3 className="text-lg font-bold text-[#10201F] dark:text-[#FFFFFF]">
               Connection Requests
             </h3>
 
@@ -637,8 +637,8 @@ export default function Home({
                   <div
                     key={request.id}
                     className="
-                      border border-[#d9e2e1] dark:border-[#303c39]
-                      bg-white dark:bg-[#151c1b]
+                      border border-[#D9E2E1] dark:border-[#303C39]
+                      bg-white dark:bg-[#151C1B]
                       rounded-xl
                       p-4
                       flex items-center justify-between
@@ -687,13 +687,13 @@ export default function Home({
                       </button>
 
                       <div className="min-w-0">
-                        <p className="font-semibold text-[#10201f] dark:text-[#FFFFFF] truncate">
+                        <p className="font-semibold text-[#10201F] dark:text-[#FFFFFF] truncate">
                           {request.senderProfile
                             ?.fullName ||
                             "Unknown user"}
                         </p>
 
-                        <p className="text-sm text-[#566867] dark:text-[#aab8b5]">
+                        <p className="text-sm text-[#566867] dark:text-[#7F908B]">
                           Wants to connect with you.
                         </p>
                       </div>
@@ -711,10 +711,10 @@ export default function Home({
                         className="
                           px-3 py-2
                           rounded-lg
-                          bg-[#0f766e]
+                          bg-[#0F766E] dark:bg-[#0F766E]
                           text-[#FFFFFF]
                           text-xs font-semibold
-                          hover:bg-[#0f766e]
+                          hover:bg-[#0F766E] dark:hover:bg-[#0F766E]
                           transition-colors duration-300
                           cursor-pointer
                         "
@@ -732,10 +732,10 @@ export default function Home({
                         className="
                           px-3 py-2
                           rounded-lg
-                          bg-[#eaf0ef] dark:bg-[#26322f]
-                          text-[#10201f] dark:text-[#FFFFFF]
+                          bg-[#F1F5F4] dark:bg-[#26322F]
+                          text-[#10201F] dark:text-[#FFFFFF]
                           text-xs font-semibold
-                          hover:bg-[#d9e2e1] dark:hover:bg-[#26322f]
+                          hover:bg-[#D9E2E1] dark:hover:bg-[#303C39]
                           transition-colors duration-300
                           cursor-pointer
                         "
@@ -754,23 +754,23 @@ export default function Home({
         <div
           className="
             mb-6
-            bg-white dark:bg-[#151c1b]
-            border border-[#d9e2e1] dark:border-[#303c39]
+            bg-white dark:bg-[#151C1B]
+            border border-[#D9E2E1] dark:border-[#303C39]
             rounded-2xl
             p-5
             transition-colors duration-300
           "
         >
-          <h3 className="text-lg font-bold text-[#10201f] dark:text-[#FFFFFF]">
+          <h3 className="text-lg font-bold text-[#10201F] dark:text-[#FFFFFF]">
             Your Contacts
           </h3>
 
           {contactsLoading ? (
-            <p className="mt-3 text-sm text-[#566867] dark:text-[#aab8b5]">
+            <p className="mt-3 text-sm text-[#566867] dark:text-[#7F908B]">
               Loading contacts...
             </p>
           ) : contacts.length === 0 ? (
-            <p className="mt-3 text-sm text-[#566867] dark:text-[#aab8b5]">
+            <p className="mt-3 text-sm text-[#566867] dark:text-[#7F908B]">
               Your contacts will appear here.
             </p>
           ) : (
@@ -779,8 +779,8 @@ export default function Home({
                 <div
                   key={contact.id}
                   className="
-                    border border-[#d9e2e1] dark:border-[#303c39]
-                    bg-white dark:bg-[#151c1b]
+                    border border-[#D9E2E1] dark:border-[#303C39]
+                    bg-white dark:bg-[#151C1B]
                     rounded-xl
                     p-4
                     flex items-center justify-between
@@ -826,13 +826,13 @@ export default function Home({
                     </button>
 
                     <div className="min-w-0">
-                      <p className="font-semibold text-[#10201f] dark:text-[#FFFFFF] truncate">
+                      <p className="font-semibold text-[#10201F] dark:text-[#FFFFFF] truncate">
                         {contact.contactProfile
                           ?.fullName ||
                           "Unknown user"}
                       </p>
 
-                      <p className="text-sm text-[#566867] dark:text-[#aab8b5]">
+                      <p className="text-sm text-[#566867] dark:text-[#7F908B]">
                         Connected
                       </p>
                     </div>
@@ -882,8 +882,8 @@ export default function Home({
                       flex-shrink-0
                       px-3 py-2
                       rounded-lg
-                      bg-[#0f766e]
-                      hover:bg-[#0f766e]
+                      bg-[#0F766E] dark:bg-[#0F766E]
+                      hover:bg-[#0F766E] dark:hover:bg-[#0F766E]
                       text-[#FFFFFF]
                       text-xs font-semibold
                       transition-colors duration-300
@@ -902,18 +902,18 @@ export default function Home({
         <div
           className="
             mb-6
-            bg-white dark:bg-[#151c1b]
-            border border-[#d9e2e1] dark:border-[#303c39]
+            bg-white dark:bg-[#151C1B]
+            border border-[#D9E2E1] dark:border-[#303C39]
             rounded-2xl
             p-5
             transition-colors duration-300
           "
         >
-          <h3 className="text-lg font-bold text-[#10201f] dark:text-[#FFFFFF]">
+          <h3 className="text-lg font-bold text-[#10201F] dark:text-[#FFFFFF]">
             Find someone
           </h3>
 
-          <p className="mt-1 text-sm text-[#566867] dark:text-[#aab8b5]">
+          <p className="mt-1 text-sm text-[#566867] dark:text-[#7F908B]">
             Search by name.
           </p>
 
@@ -933,15 +933,15 @@ export default function Home({
                 flex-1
                 h-11
                 px-4
-                border border-[#b3c2c0] dark:border-[#46534f]
+                border border-[#D9E2E1] dark:border-[#46534F]
                 rounded-[10px]
-                bg-white dark:bg-[#101615]
-                text-[#10201f] dark:text-[#FFFFFF]
+                bg-white dark:bg-[#26322F]
+                text-[#10201F] dark:text-[#FFFFFF]
                 placeholder:text-[#566867]/60
-                dark:placeholder:text-[#aab8b5]
+                dark:placeholder:text-[#7F908B]
                 focus:outline-none
                 focus:ring-2
-                focus:ring-[#0f766e]
+                focus:ring-[#0F766E] dark:focus:ring-[#0F766E]
                 focus:border-transparent
                 transition-colors duration-300
               "
@@ -955,8 +955,8 @@ export default function Home({
                 h-11
                 px-5
                 rounded-[10px]
-                bg-[#0f766e]
-                hover:bg-[#0f766e]
+                bg-[#0F766E] dark:bg-[#0F766E]
+                hover:bg-[#0F766E] dark:hover:bg-[#0F766E]
                 text-[#FFFFFF]
                 font-semibold
                 transition-colors duration-300
@@ -973,7 +973,7 @@ export default function Home({
 
           {searchError && (
             <p
-              className="mt-3 text-sm text-[#b42318] dark:text-[#2dd4bf]"
+              className="mt-3 text-sm text-[#EF4444] dark:text-[#EF4444]"
               role="alert"
             >
               {searchError}
@@ -985,8 +985,8 @@ export default function Home({
               key={result.uid}
               className="
                 mt-4
-                border border-[#d9e2e1] dark:border-[#303c39]
-                bg-white dark:bg-[#151c1b]
+                border border-[#D9E2E1] dark:border-[#303C39]
+                bg-white dark:bg-[#151C1B]
                 rounded-xl
                 p-4
                 flex items-center justify-between
@@ -1026,11 +1026,11 @@ export default function Home({
                 </button>
 
                 <div className="min-w-0">
-                  <p className="font-semibold text-[#10201f] dark:text-[#FFFFFF] truncate">
+                  <p className="font-semibold text-[#10201F] dark:text-[#FFFFFF] truncate">
                     {result.fullName}
                   </p>
 
-                  <p className="text-sm text-[#566867] dark:text-[#aab8b5]">
+                  <p className="text-sm text-[#566867] dark:text-[#7F908B]">
                     User found
                   </p>
                 </div>
@@ -1048,8 +1048,8 @@ export default function Home({
                   flex-shrink-0
                   text-xs
                   font-semibold
-                  text-[#0f766e] dark:text-[#2dd4bf]
-                  hover:text-[#0b5f58] dark:hover:text-[#0f766e]
+                  text-[#0F766E] dark:text-[#0F766E]
+                  hover:text-[#0F766E] dark:hover:text-[#0F766E]
                   disabled:opacity-50
                   cursor-pointer
                 "
@@ -1062,7 +1062,7 @@ export default function Home({
           ))}
 
           {requestMessage && (
-            <p className="mt-3 text-sm text-[#0f766e] dark:text-[#2dd4bf]">
+            <p className="mt-3 text-sm text-[#0F766E] dark:text-[#0F766E]">
               {requestMessage}
             </p>
           )}
@@ -1072,14 +1072,14 @@ export default function Home({
         {rejectedRequests.length > 0 && (
           <div
             className="
-              bg-white dark:bg-[#151c1b]
-              border border-[#d9e2e1] dark:border-[#303c39]
+              bg-white dark:bg-[#151C1B]
+              border border-[#D9E2E1] dark:border-[#303C39]
               rounded-2xl
               p-5
               transition-colors duration-300
             "
           >
-            <h3 className="text-lg font-bold text-[#10201f] dark:text-[#FFFFFF]">
+            <h3 className="text-lg font-bold text-[#10201F] dark:text-[#FFFFFF]">
               Rejected Requests
             </h3>
 
@@ -1089,8 +1089,8 @@ export default function Home({
                   <div
                     key={request.id}
                     className="
-                      border border-[#d9e2e1] dark:border-[#303c39]
-                      bg-white dark:bg-[#151c1b]
+                      border border-[#D9E2E1] dark:border-[#303C39]
+                      bg-white dark:bg-[#151C1B]
                       rounded-xl
                       p-4
                       transition-colors duration-300
@@ -1139,14 +1139,14 @@ export default function Home({
                       </button>
 
                       <div className="min-w-0">
-                        <p className="font-semibold text-[#10201f] dark:text-[#FFFFFF]">
+                        <p className="font-semibold text-[#10201F] dark:text-[#FFFFFF]">
                           {request
                             .otherUserProfile
                             ?.fullName ||
                             "Unknown user"}
                         </p>
 
-                        <p className="text-sm text-[#566867] dark:text-[#aab8b5]">
+                        <p className="text-sm text-[#566867] dark:text-[#7F908B]">
                           Connection request rejected.
                         </p>
                       </div>
@@ -1165,7 +1165,7 @@ export default function Home({
           className="
             fixed inset-0
             z-[100]
-            bg-black/80
+            bg-[#0D1211]/80
             flex items-center justify-center
             p-4
           "
@@ -1193,8 +1193,8 @@ export default function Home({
                 -top-12
                 w-10 h-10
                 rounded-full
-                bg-white/10
-                hover:bg-white/20
+                bg-[#151C1B]
+                hover:bg-[#26322F]
                 text-white
                 text-2xl
                 flex items-center justify-center

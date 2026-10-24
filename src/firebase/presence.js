@@ -74,3 +74,60 @@ export function listenToUserStatus(uid, callback) {
     callback(snapshot.val());
   });
 }
+
+export async function setUserTyping(
+  chatId,
+  uid
+) {
+  if (!chatId || !uid) {
+    return;
+  }
+
+  const typingRef = ref(
+    realtimeDb,
+    `typing/${chatId}/${uid}`
+  );
+
+  await onDisconnect(typingRef).remove();
+
+  await set(typingRef, true);
+}
+
+export async function setUserNotTyping(
+  chatId,
+  uid
+) {
+  if (!chatId || !uid) {
+    return;
+  }
+
+  const typingRef = ref(
+    realtimeDb,
+    `typing/${chatId}/${uid}`
+  );
+
+  await set(typingRef, false);
+}
+
+export function listenToTypingStatus(
+  chatId,
+  uid,
+  callback
+) {
+  if (!chatId || !uid) {
+    callback(false);
+    return () => {};
+  }
+
+  const typingRef = ref(
+    realtimeDb,
+    `typing/${chatId}/${uid}`
+  );
+
+  return onValue(
+    typingRef,
+    (snapshot) => {
+      callback(snapshot.val() === true);
+    }
+  );
+}

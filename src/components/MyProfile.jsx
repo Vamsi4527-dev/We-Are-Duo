@@ -82,7 +82,7 @@ export default function MyProfile({ user, onBack }) {
     <main
       className="
         min-h-screen
-        bg-[#FFFFFF] dark:bg-[#0d1211]
+        bg-[#FFFFFF] dark:bg-[#0D1211]
         px-4 py-6
         transition-colors duration-300
       "
@@ -97,10 +97,10 @@ export default function MyProfile({ user, onBack }) {
             className="
               px-4 py-2
               rounded-lg
-              bg-[#eaf0ef] dark:bg-[#26322f]
-              text-[#10201f] dark:text-white
+              bg-[#F1F5F4] dark:bg-[#26322F]
+              text-[#10201F] dark:text-white
               text-sm font-semibold
-              hover:bg-[#d9e2e1] dark:hover:bg-[#303c39]
+              hover:bg-[#D9E2E1] dark:hover:bg-[#303C39]
               transition-colors duration-300
               cursor-pointer
             "
@@ -111,7 +111,7 @@ export default function MyProfile({ user, onBack }) {
           <h1
             className="
               text-xl font-bold
-              text-[#10201f] dark:text-white
+              text-[#10201F] dark:text-white
             "
           >
             My Profile
@@ -124,8 +124,8 @@ export default function MyProfile({ user, onBack }) {
         <div
           className="
             rounded-2xl
-            border border-[#d9e2e1] dark:border-[#303c39]
-            bg-white dark:bg-[#151c1b]
+            border border-[#D9E2E1] dark:border-[#303C39]
+            bg-white dark:bg-[#151C1B]
             p-6
             transition-colors duration-300
           "
@@ -141,7 +141,7 @@ export default function MyProfile({ user, onBack }) {
                   w-28 h-28
                   rounded-full
                   object-cover
-                  border border-[#d9e2e1] dark:border-[#303c39]
+                  border border-[#D9E2E1] dark:border-[#303C39]
                 "
               />
             ) : (
@@ -149,11 +149,11 @@ export default function MyProfile({ user, onBack }) {
                 className="
                   w-28 h-28
                   rounded-full
-                  bg-[#eaf0ef] dark:bg-[#26322f]
-                  border border-[#d9e2e1] dark:border-[#303c39]
+                  bg-[#F1F5F4] dark:bg-[#26322F]
+                  border border-[#D9E2E1] dark:border-[#303C39]
                   flex items-center justify-center
                   text-4xl font-bold
-                  text-[#566867] dark:text-[#aab8b5]
+                  text-[#566867] dark:text-[#7F908B]
                 "
               >
                 {(user?.displayName || user?.email || "?")
@@ -186,12 +186,12 @@ export default function MyProfile({ user, onBack }) {
                 w-full
                 h-11
                 rounded-lg
-                border border-[#d9e2e1] dark:border-[#303c39]
-                bg-[#eaf0ef] dark:bg-[#26322f]
-                text-[#10201f] dark:text-white
+                border border-[#D9E2E1] dark:border-[#303C39]
+                bg-[#F1F5F4] dark:bg-[#26322F]
+                text-[#10201F] dark:text-white
                 text-sm font-semibold
                 flex items-center justify-center
-                hover:bg-[#d9e2e1] dark:hover:bg-[#303c39]
+                hover:bg-[#D9E2E1] dark:hover:bg-[#303C39]
                 transition-colors duration-300
                 cursor-pointer
               "
@@ -206,7 +206,7 @@ export default function MyProfile({ user, onBack }) {
                   mt-2
                   text-xs
                   text-center
-                  text-[#566867] dark:text-[#aab8b5]
+                  text-[#566867] dark:text-[#7F908B]
                   truncate
                 "
                 title={selectedFile.name}
@@ -226,16 +226,15 @@ export default function MyProfile({ user, onBack }) {
                 mt-4
                 w-full
                 rounded-lg
-                bg-[#10201f]
-                dark:bg-white
+                bg-[#0F766E]
+                dark:bg-[#0F766E]
                 px-4 py-2.5
                 text-sm font-semibold
                 text-white
-                dark:text-[#10201f]
-                hover:opacity-90
+                hover:bg-[#0F766E] dark:hover:bg-[#0F766E]
                 disabled:opacity-50
                 disabled:cursor-not-allowed
-                transition-opacity duration-300
+                transition-colors duration-300
                 cursor-pointer
               "
             >
@@ -255,12 +254,12 @@ export default function MyProfile({ user, onBack }) {
                 mt-3
                 w-full
                 rounded-lg
-                border border-[#d9e2e1] dark:border-[#303c39]
-                bg-white dark:bg-[#151c1b]
+                border border-[#D9E2E1] dark:border-[#303C39]
+                bg-white dark:bg-[#151C1B]
                 px-4 py-2.5
                 text-sm font-semibold
-                text-[#10201f] dark:text-white
-                hover:bg-[#eaf0ef] dark:hover:bg-[#26322f]
+                text-[#10201F] dark:text-white
+                hover:bg-[#F1F5F4] dark:hover:bg-[#26322F]
                 disabled:opacity-50
                 disabled:cursor-not-allowed
                 transition-colors duration-300
@@ -278,7 +277,7 @@ export default function MyProfile({ user, onBack }) {
             <p
               className="
                 text-xs font-semibold
-                text-[#566867] dark:text-[#aab8b5]
+                text-[#566867] dark:text-[#7F908B]
               "
             >
               Name
@@ -288,7 +287,7 @@ export default function MyProfile({ user, onBack }) {
               className="
                 mt-1
                 text-base font-semibold
-                text-[#10201f] dark:text-white
+                text-[#10201F] dark:text-white
               "
             >
               {user?.displayName || "Not set"}
@@ -300,7 +299,7 @@ export default function MyProfile({ user, onBack }) {
             <p
               className="
                 text-xs font-semibold
-                text-[#566867] dark:text-[#aab8b5]
+                text-[#566867] dark:text-[#7F908B]
               "
             >
               Email
@@ -310,7 +309,7 @@ export default function MyProfile({ user, onBack }) {
               className="
                 mt-1
                 text-base font-semibold
-                text-[#10201f] dark:text-white
+                text-[#10201F] dark:text-white
                 break-all
               "
             >

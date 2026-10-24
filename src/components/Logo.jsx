@@ -43,7 +43,7 @@ export default function Logo({
         aria-hidden="true"
       >
         <span
-          className={`absolute left-0 top-0 ${currentSize.circle} rounded-full ${currentSize.border} border-[#0f766e] dark:border-[#2dd4bf] ${
+          className={`absolute left-0 top-0 ${currentSize.circle} rounded-full ${currentSize.border} border-[#0f766e] dark:border-[#0F766E] ${
             animated ? "animate-ring-left" : ""
           }`}
         />

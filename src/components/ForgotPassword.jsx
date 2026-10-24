@@ -43,14 +43,14 @@ export default function ForgotPassword({ onNavigate }) {
       onNavigate={onNavigate}
     >
       <section
-        className="w-full max-w-[26rem] sm:max-w-[30rem] bg-white dark:bg-[#151c1b] border border-[#d9e2e1] dark:border-[#303c39] rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col gap-5"
+        className="w-full max-w-[26rem] sm:max-w-[30rem] bg-white dark:bg-[#151C1B] border border-[#D9E2E1] dark:border-[#303C39] rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col gap-5"
         aria-labelledby="forgot-title"
       >
         <header className="flex flex-col gap-1">
-          <h1 id="forgot-title" className="text-2xl font-bold tracking-tight text-[#10201f] dark:text-[#FFFFFF]">
+          <h1 id="forgot-title" className="text-2xl font-bold tracking-tight text-[#10201F] dark:text-[#FFFFFF]">
             Reset your password
           </h1>
-          <p className="text-sm text-[#566867] dark:text-[#aab8b5]">
+          <p className="text-sm text-[#566867] dark:text-[#7F908B]">
             Enter your email address and we'll send you a link to choose a new password.
           </p>
         </header>
@@ -58,7 +58,7 @@ export default function ForgotPassword({ onNavigate }) {
         <form onSubmit={handleSubmit} className="flex flex-col gap-5" method="post">
           {statusMessage && (
             <div
-              className="bg-[#e3f5ec] dark:bg-[#26322f] border border-[#a3e4c4] dark:border-[#303c39] text-[#0a6b45] dark:text-[#2dd4bf] rounded-xl p-3.5 text-sm"
+              className="bg-[#F1F5F4] dark:bg-[#26322F] border border-[#D9E2E1] dark:border-[#303C39] text-[#0F766E] dark:text-[#0F766E] rounded-xl p-3.5 text-sm"
               role="status"
             >
               {statusMessage}
@@ -67,7 +67,7 @@ export default function ForgotPassword({ onNavigate }) {
 
           {errorMessage && (
             <div
-              className="bg-[#fdecea] dark:bg-[#26322f] border border-[#f5c2c7] dark:border-[#303c39] text-[#b42318] dark:text-[#2dd4bf] rounded-xl p-3.5 text-sm"
+              className="bg-[#F1F5F4] dark:bg-[#26322F] border border-[#F1F5F4] dark:border-[#303C39] text-[#EF4444] dark:text-[#EF4444] rounded-xl p-3.5 text-sm"
               role="alert"
             >
               {errorMessage}
@@ -75,7 +75,7 @@ export default function ForgotPassword({ onNavigate }) {
           )}
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-semibold text-[#10201f] dark:text-[#FFFFFF]" htmlFor="forgot-email">
+            <label className="text-sm font-semibold text-[#10201F] dark:text-[#FFFFFF]" htmlFor="forgot-email">
               Email address
             </label>
             <input
@@ -87,24 +87,24 @@ export default function ForgotPassword({ onNavigate }) {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="alex@example.com"
               required
-              className="w-full h-11 px-4 border border-[#b3c2c0] dark:border-[#46534f] rounded-[10px] bg-white dark:bg-[#101615] text-[#10201f] dark:text-[#FFFFFF] placeholder:text-[#566867]/60 dark:placeholder:text-[#aab8b5] focus:outline-none focus:ring-2 focus:ring-[#0f766e] focus:border-transparent transition"
+              className="w-full h-11 px-4 border border-[#D9E2E1] dark:border-[#46534F] rounded-[10px] bg-white dark:bg-[#26322F] text-[#10201F] dark:text-[#AAB8B5] placeholder:text-[#566867]/60 dark:placeholder:text-[#7F908B] focus:outline-none focus:ring-2 focus:ring-[#0F766E] dark:focus:ring-[#0F766E] focus:border-transparent transition"
             />
           </div>
 
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full h-11 px-5 rounded-[10px] bg-[#0f766e] hover:bg-[#0b5f58] text-[#FFFFFF] font-semibold transition cursor-pointer disabled:opacity-60 disabled:cursor-wait"
+            className="w-full h-11 px-5 rounded-[10px] bg-[#0F766E] dark:bg-[#0F766E] hover:bg-[#0F766E] dark:hover:bg-[#0F766E] text-[#FFFFFF] font-semibold transition cursor-pointer disabled:opacity-60 disabled:cursor-wait"
           >
             {isLoading ? "Sending link..." : "Send reset link"}
           </button>
         </form>
 
-        <p className="text-sm text-center text-[#566867] dark:text-[#aab8b5]">
+        <p className="text-sm text-center text-[#566867] dark:text-[#7F908B]">
           <button
             type="button"
             onClick={() => onNavigate("login")}
-            className="font-semibold text-[#0f766e] dark:text-[#2dd4bf] hover:underline cursor-pointer"
+            className="font-semibold text-[#0F766E] dark:text-[#0F766E] hover:underline cursor-pointer"
           >
             Back to sign in
           </button>

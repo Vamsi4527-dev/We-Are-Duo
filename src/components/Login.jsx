@@ -50,18 +50,18 @@ export default function Login({ onNavigate }) {
       onNavigate={onNavigate}
     >
       <section
-        className="w-full max-w-[26rem] sm:max-w-[30rem] bg-white dark:bg-[#151c1b] border border-[#d9e2e1] dark:border-[#303c39] rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col gap-5"
+        className="w-full max-w-[26rem] sm:max-w-[30rem] bg-white dark:bg-[#151C1B] border border-[#D9E2E1] dark:border-[#303C39] rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col gap-5"
         aria-labelledby="login-title"
       >
         <header className="flex flex-col gap-1">
           <h1
             id="login-title"
-            className="text-2xl font-bold tracking-tight text-[#10201f] dark:text-[#FFFFFF]"
+            className="text-2xl font-bold tracking-tight text-[#10201F] dark:text-[#FFFFFF]"
           >
             Sign in
           </h1>
 
-          <p className="text-sm text-[#566867] dark:text-[#aab8b5]">
+          <p className="text-sm text-[#566867] dark:text-[#7F908B]">
             Welcome back. Sign in to open your conversation.
           </p>
         </header>
@@ -73,7 +73,7 @@ export default function Login({ onNavigate }) {
         >
           {error && (
             <div
-              className="bg-[#fdecea] dark:bg-[#26322f] border border-[#f5c2c7] dark:border-[#303c39] text-[#b42318] dark:text-[#2dd4bf] rounded-xl p-3.5 text-sm"
+              className="bg-[#F1F5F4] dark:bg-[#26322F] border border-[#F1F5F4] dark:border-[#303C39] text-[#EF4444] dark:text-[#EF4444] rounded-xl p-3.5 text-sm"
               role="alert"
             >
               {error}
@@ -82,7 +82,7 @@ export default function Login({ onNavigate }) {
 
           <div className="flex flex-col gap-1.5">
             <label
-              className="text-sm font-semibold text-[#10201f] dark:text-[#FFFFFF]"
+              className="text-sm font-semibold text-[#10201F] dark:text-[#FFFFFF]"
               htmlFor="login-email"
             >
               Email address
@@ -97,14 +97,14 @@ export default function Login({ onNavigate }) {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="alex@example.com"
               required
-              className="w-full h-11 px-4 border border-[#b3c2c0] dark:border-[#46534f] rounded-[10px] bg-white dark:bg-[#101615] text-[#10201f] dark:text-[#FFFFFF] placeholder:text-[#566867]/60 dark:placeholder:text-[#aab8b5] focus:outline-none focus:ring-2 focus:ring-[#0f766e] focus:border-transparent transition"
+              className="w-full h-11 px-4 border border-[#D9E2E1] dark:border-[#46534F] rounded-[10px] bg-white dark:bg-[#26322F] text-[#10201F] dark:text-[#AAB8B5] placeholder:text-[#566867]/60 dark:placeholder:text-[#7F908B] focus:outline-none focus:ring-2 focus:ring-[#0F766E] dark:focus:ring-[#0F766E] focus:border-transparent transition"
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between">
               <label
-                className="text-sm font-semibold text-[#10201f] dark:text-[#FFFFFF]"
+                className="text-sm font-semibold text-[#10201F] dark:text-[#FFFFFF]"
                 htmlFor="login-password"
               >
                 Password
@@ -113,7 +113,7 @@ export default function Login({ onNavigate }) {
               <button
                 type="button"
                 onClick={() => onNavigate("forgot-password")}
-                className="text-sm font-semibold text-[#0f766e] dark:text-[#2dd4bf] hover:underline cursor-pointer"
+                className="text-sm font-semibold text-[#0F766E] dark:text-[#0F766E] hover:underline cursor-pointer"
               >
                 Forgot password?
               </button>
@@ -128,7 +128,7 @@ export default function Login({ onNavigate }) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full h-11 pl-4 pr-11 border border-[#b3c2c0] dark:border-[#46534f] rounded-[10px] bg-white dark:bg-[#101615] text-[#10201f] dark:text-[#FFFFFF] placeholder:text-[#566867]/60 dark:placeholder:text-[#aab8b5] focus:outline-none focus:ring-2 focus:ring-[#0f766e] focus:border-transparent transition"
+                className="w-full h-11 pl-4 pr-11 border border-[#D9E2E1] dark:border-[#46534F] rounded-[10px] bg-white dark:bg-[#26322F] text-[#10201F] dark:text-[#AAB8B5] placeholder:text-[#566867]/60 dark:placeholder:text-[#7F908B] focus:outline-none focus:ring-2 focus:ring-[#0F766E] dark:focus:ring-[#0F766E] focus:border-transparent transition"
               />
 
               <button
@@ -137,7 +137,7 @@ export default function Login({ onNavigate }) {
                 aria-label={
                   showPassword ? "Hide password" : "Show password"
                 }
-                className="absolute right-0 h-11 w-11 flex items-center justify-center text-[#566867] dark:text-[#aab8b5] hover:text-[#10201f] dark:hover:text-[#FFFFFF] transition cursor-pointer"
+                className="absolute right-0 h-11 w-11 flex items-center justify-center text-[#566867] dark:text-[#7F908B] hover:text-[#10201F] dark:hover:text-[#FFFFFF] transition cursor-pointer"
               >
                 {showPassword ? (
                   <svg
@@ -174,13 +174,13 @@ export default function Login({ onNavigate }) {
             </div>
           </div>
 
-          <label className="flex items-center gap-2.5 cursor-pointer text-sm text-[#10201f] dark:text-[#FFFFFF]">
+          <label className="flex items-center gap-2.5 cursor-pointer text-sm text-[#10201F] dark:text-[#AAB8B5]">
             <input
               type="checkbox"
               name="remember"
               checked={remember}
               onChange={(e) => setRemember(e.target.checked)}
-              className="w-4 h-4 rounded border-[#b3c2c0] dark:border-[#303c39] text-[#0f766e] focus:ring-[#0f766e] cursor-pointer"
+              className="w-4 h-4 rounded border-[#D9E2E1] dark:border-[#303C39] text-[#0F766E] focus:ring-[#0F766E] cursor-pointer"
             />
 
             <span>Remember me on this device</span>
@@ -189,18 +189,18 @@ export default function Login({ onNavigate }) {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full h-11 px-5 rounded-[10px] bg-[#0f766e] hover:bg-[#0b5f58] text-[#FFFFFF] font-semibold transition cursor-pointer disabled:opacity-60 disabled:cursor-wait"
+            className="w-full h-11 px-5 rounded-[10px] bg-[#0F766E] dark:bg-[#0F766E] hover:bg-[#0F766E] dark:hover:bg-[#0F766E] text-[#FFFFFF] font-semibold transition cursor-pointer disabled:opacity-60 disabled:cursor-wait"
           >
             {isLoading ? "Signing in..." : "Sign in"}
           </button>
         </form>
 
-        <p className="text-sm text-center text-[#566867] dark:text-[#aab8b5]">
+        <p className="text-sm text-center text-[#566867] dark:text-[#7F908B]">
           Don't have an account?{" "}
           <button
             type="button"
             onClick={() => onNavigate("register")}
-            className="font-semibold text-[#0f766e] dark:text-[#2dd4bf] hover:underline cursor-pointer"
+            className="font-semibold text-[#0F766E] dark:text-[#0F766E] hover:underline cursor-pointer"
           >
             Create one
           </button>

@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --app-input-background: #FFFFFF;
+}
+
+:root.dark {
+  --app-input-background: #101615;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="submit"]):not([type="button"]),
+textarea,
+select {
+  border-color: #46534F;
+  background-color: var(--app-input-background);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #7F908B;
+  opacity: 1;
+}
+
 @keyframes loaderSweep {
   0% {
     transform: translateX(-100%);
